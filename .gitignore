@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+build/
+next-env.d.ts
+
+# Env & secrets — NEVER commit real values
+.env
+.env.local
+.env.*.local
+*.pem
+google-tts-credentials.json
+
+# Test / coverage
+coverage/
+playwright-report/
+test-results/
+.vitest/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Python (a virtual environment must never be committed)
+pyenv/
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+
+# Drizzle
+drizzle/.cache/
+
+# Misc
+.turbo/
+.vercel/
