@@ -17,10 +17,12 @@ ADR-0007: a stray Python venv was a mistake; stack stays Node/TS.)*
 
 ## Frontend
 
-**Next.js 15 (App Router)** — React framework with server components, server actions,
+**Next.js 16 (App Router)** — React framework with server components, server actions,
 streaming. *Why over a SPA + separate API:* RSC ships less JS to low-end Android (Principle
 9), server actions remove a hand-written API layer, and streaming suits the coach. *We lose:*
 App Router's mental model is newer and has sharper edges than a plain SPA.
+*Note:* the plan defaulted to Next 15; `create-next-app@latest` installed **16.2.7** (current
+stable, App-Router-compatible). Accepted — see ADR-0008.
 
 **Tailwind CSS + shadcn/ui** — Utility CSS + unstyled, owned components. *Why over a component
 library like MUI:* we own the markup (accessibility, bundle size, brand control) instead of

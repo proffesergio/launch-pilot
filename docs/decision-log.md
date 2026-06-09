@@ -81,6 +81,17 @@ so a venv can never be committed; the directory may be deleted at will.
 **Consequences:** + No stack drift; one language across the codebase. − None. If a genuine
 Python need arises later (e.g. an ML/eval sidecar), it gets its own superseding ADR.
 
+## ADR-0008 — Next.js 16 (not 15)
+**Date:** 2026-06-09 · **Status:** accepted
+**Context:** The plan defaulted to "Next.js 15". `create-next-app@latest` scaffolded
+**16.2.7**, the current stable, using the App Router + Turbopack. Downgrading to 15 would
+mean fighting the default and missing current fixes.
+**Decision:** Stay on Next.js 16.x. Production build + strict TypeScript verified green at
+scaffold time.
+**Consequences:** + Current stable, App-Router/RSC model unchanged from the plan, less drift
+from upstream. − Slightly newer surface; we watch for 16.x breaking changes and pin the
+minor in `package.json`.
+
 ---
 
 ### Template for new ADRs
