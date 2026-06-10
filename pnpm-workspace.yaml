@@ -1,5 +1,7 @@
 # Allow native build scripts only for these trusted deps (pnpm blocks all by default).
 # sharp: Next.js image optimization. unrs-resolver: eslint's native resolver.
 allowBuilds:
+  '@sentry/cli': true
+  core-js: false
   sharp: true
   unrs-resolver: true
