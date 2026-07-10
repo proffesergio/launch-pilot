@@ -22,6 +22,13 @@
       "when": 1783703600223,
       "tag": "0002_safe_martin_li",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1783717079141,
+      "tag": "0003_minor_silk_fever",
+      "breakpoints": true
     }
   ]
 }

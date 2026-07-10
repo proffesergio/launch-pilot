@@ -29,7 +29,52 @@
   "dashboard": {
     "title": "Your dashboard",
     "signedInAs": "Signed in as {email}",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "startOnboarding": "Start: tell us about your skill",
+    "profile": {
+      "skill": "Skill",
+      "platform": "Platform",
+      "state": "Journey stage"
+    }
+  },
+  "onboarding": {
+    "skill": {
+      "question": "What can you do, or what would you love to learn?",
+      "placeholder": "In your own words — Bangla or English. For example: I make logos for my cousin's shop."
+    },
+    "platform": {
+      "question": "Where do you want to earn first?",
+      "fiverr": "Fiverr",
+      "fiverrHint": "You publish services (gigs); buyers come to you.",
+      "upwork": "Upwork",
+      "upworkHint": "You send proposals to posted jobs."
+    },
+    "hours": {
+      "question": "How many hours a week can you really give?",
+      "perWeek": "{hours} hours"
+    },
+    "english": {
+      "question": "How comfortable are you writing to clients in English?",
+      "low": "Not comfortable yet",
+      "lowHint": "Atlas will draft client messages with you, step by step.",
+      "medium": "I manage, slowly",
+      "mediumHint": "You'll get templates and gentle corrections.",
+      "high": "Comfortable",
+      "highHint": "We'll polish tone and negotiation."
+    },
+    "experience": {
+      "question": "Have you done paid work with this skill before?",
+      "none": "Never",
+      "noneHint": "Perfect — the roadmap starts from zero.",
+      "some": "A little",
+      "someHint": "Friends, family, or a few small jobs.",
+      "experienced": "Yes, regularly",
+      "experiencedHint": "We'll focus on getting you online and scaling."
+    },
+    "back": "Back",
+    "next": "Next",
+    "finish": "Build my roadmap",
+    "error": "Saving failed. Your answers are still here — try again."
   },
   "home": {
     "title": "Welcome to LaunchPilot",

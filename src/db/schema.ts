@@ -1,6 +1,38 @@
-import { pgTable, uuid, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export * from "./auth-schema";
+import { user } from "./auth-schema";
+
+/**
+ * The Freelancer Profile (M1, architecture §4): one row per user, drives all
+ * personalization. Typed columns are what the roadmap generator and coach
+ * query on; `rawInputs` preserves the user's own words (schema-on-read) for
+ * coach context and future re-classification.
+ */
+export const freelancerProfiles = pgTable("freelancer_profiles", {
+  userId: text("user_id")
+    .primaryKey()
+    .references(() => user.id, { onDelete: "cascade" }),
+  skillId: text("skill_id").notNull(),
+  skillTrack: text("skill_track").notNull(),
+  skillConfidence: text("skill_confidence").notNull(), // high | low
+  skillSource: text("skill_source").notNull(), // ai | fallback
+  targetPlatform: text("target_platform").notNull(), // fiverr | upwork
+  weeklyHours: integer("weekly_hours").notNull(),
+  country: text("country").notNull().default("BD"),
+  englishConfidence: text("english_confidence").notNull(), // low | medium | high
+  experience: text("experience").notNull(), // none | some | experienced
+  rawInputs: jsonb("raw_inputs").notNull(),
+  journeyState: text("journey_state").notNull().default("onboarding"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type FreelancerProfile = typeof freelancerProfiles.$inferSelect;
 
 /**
  * Walking-skeleton table. Its only job is to prove a real read/write travels

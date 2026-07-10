@@ -12,7 +12,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "e2e": "playwright test",
     "setup": "node scripts/setup.mjs"
   },
@@ -27,6 +27,7 @@
     "next-intl": "^4.13.2",
     "pino": "^10.3.1",
     "posthog-js": "^1.382.0",
+    "posthog-node": "^5.40.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "zod": "^4.4.3"
