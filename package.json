@@ -11,19 +11,28 @@
     "test:watch": "vitest",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "typecheck": "tsc --noEmit",
+    "e2e": "playwright test",
+    "setup": "node scripts/setup.mjs"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.11",
     "@neondatabase/serverless": "^1.1.0",
     "@sentry/nextjs": "^10.56.0",
+    "ai": "^7.0.20",
+    "better-auth": "^1.6.23",
     "drizzle-orm": "^0.45.2",
     "next": "16.2.7",
+    "next-intl": "^4.13.2",
+    "pino": "^10.3.1",
     "posthog-js": "^1.382.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -36,5 +45,6 @@
     "tsx": "^4.22.4",
     "typescript": "^5",
     "vitest": "^4.1.8"
-  }
+  },
+  "packageManager": "pnpm@10.34.5+sha512.a4ee05f2f73658255bd6a89859c065a45c28a57daefae2c893a168ee2b73168c37b91e83e57ea67654ad03f03031746430e8bce38e362e042605fb8abc80192e"
 }

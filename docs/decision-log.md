@@ -92,6 +92,35 @@ scaffold time.
 from upstream. − Slightly newer surface; we watch for 16.x breaking changes and pin the
 minor in `package.json`.
 
+## ADR-0009 — Post-M3 metric gate becomes a non-blocking checkpoint
+**Date:** 2026-07-10 · **Status:** accepted
+**Context:** The roadmap gated all M4+ work on activation/first-earning metrics from a real
+cohort (mitigating R2). The owner decided to build all slices M0→M10 in this push, accepting
+the R2 exposure after explicit pushback.
+**Decision:** Build proceeds sequentially through M0→M10 (one TDD'd, feature-flagged slice at
+a time; `main` always deployable). After M3.5, the app ships to a real Bangladeshi cohort
+behind flags **while build continues** — the gate becomes a checkpoint that informs, not
+blocks. Metrics may still reorder or cut later milestones.
+**Consequences:** + Full product surface sooner; sequential order still yields a launchable
+MVP early. − Real R2 risk: M4–M10 effort is committed before user signal; owner owns this
+trade-off explicitly.
+
+## ADR-0010 — New slice M3.5: Profile & Gig Launch Studio (advisory-only, reaffirmed)
+**Date:** 2026-07-10 · **Status:** accepted
+**Context:** The owner's headline ask: AI help "creating profiles" on Fiverr/Upwork.
+Automating marketplace accounts violates ADR-0001 and risks user bans (R1). The compliant
+form — AI-drafted assets + a guided self-publish walkthrough — was chosen.
+**Decision:** Add slice M3.5 after M3 (deps: M2 platform tracks, M3 coach): (1) asset
+generator — Sonnet structured output, Zod-validated, per-platform drafts (Fiverr gig
+title/packages/description/FAQ/gallery shot-list; Upwork headline/overview/spec-portfolio
+briefs) persisted in a new `launch_assets` table; (2) guided publish walkthrough — stepwise
+checklist with our own redrawn illustrations and copy-to-clipboard, steps mapped to the
+"profile live"/"gig live" boss missions; (3) readiness review — Atlas critiques the final
+draft against pinned platform-track rules. No marketplace HTTP calls anywhere; evals assert
+the coach refuses automation asks.
+**Consequences:** + Delivers the owner's intent with zero TOS exposure; reuses grounding +
+mission systems. − One more pre-checkpoint slice; curated track content must be kept current.
+
 ---
 
 ### Template for new ADRs

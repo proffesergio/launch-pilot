@@ -1,0 +1,39 @@
+{
+  "common": {
+    "appName": "LaunchPilot",
+    "listen": "Tap to listen",
+    "tagline": "Your coach to a freelance career — from any skill to your first paid order.",
+    "localeSwitcher": {
+      "label": "Language",
+      "bn": "বাংলা",
+      "en": "English"
+    }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign in to LaunchPilot",
+      "emailLabel": "Your email address",
+      "emailPlaceholder": "name@example.com",
+      "sendLink": "Send me a sign-in link",
+      "sent": "Link sent. Check your email and tap it to sign in.",
+      "google": "Continue with Google",
+      "error": "That didn't work. Please try again."
+    }
+  },
+  "aiProof": {
+    "title": "AI streaming proof",
+    "hint": "One real Sonnet call, streamed token by token. This page is scaffolding — the coach replaces it.",
+    "run": "Run the proof",
+    "error": "The stream failed. Check the server logs."
+  },
+  "dashboard": {
+    "title": "Your dashboard",
+    "signedInAs": "Signed in as {email}",
+    "signOut": "Sign out"
+  },
+  "home": {
+    "title": "Welcome to LaunchPilot",
+    "intro": "A coach, not a course. Atlas walks you step by step to your first real earning — honestly, in your language.",
+    "status": "The walking skeleton is under construction. Every layer you see here is wired end to end."
+  }
+}
