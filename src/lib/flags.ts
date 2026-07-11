@@ -10,7 +10,8 @@ export type FlagName =
   | "m2_roadmap"
   | "m3_coach"
   | "m4_gamification"
-  | "m5_platforms";
+  | "m5_platforms"
+  | "m35_launch_studio";
 
 export function getFlag(name: FlagName): boolean {
   const override = process.env[`FLAG_${name.toUpperCase()}`];

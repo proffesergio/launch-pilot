@@ -138,6 +138,41 @@ export const xpEvents = pgTable(
 export type XpEventRow = typeof xpEvents.$inferSelect;
 
 /**
+ * Launch assets (M3.5 Launch Studio, ADR-0010): the AI-drafted marketplace
+ * assets a user edits and self-publishes. One row per (user, asset_kind) —
+ * `fiverr_gig` | `upwork_profile` — with the structured draft in `content`
+ * jsonb (Zod-validated by src/lib/launch-assets.ts). `trackVersion` pins the
+ * platform-track version it was grounded on; `status` flips draft→published
+ * when the user self-attests the publish walkthrough. Advisory only: nothing
+ * here ever touches the marketplace.
+ */
+export const launchAssets = pgTable(
+  "launch_assets",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    platform: text("platform").notNull(), // fiverr | upwork
+    assetKind: text("asset_kind").notNull(), // fiverr_gig | upwork_profile
+    content: jsonb("content").notNull(),
+    trackVersion: text("track_version").notNull(),
+    generatedBy: text("generated_by").notNull(),
+    status: text("status").notNull().default("draft"), // draft | published
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [uniqueIndex("launch_assets_user_kind").on(t.userId, t.assetKind)],
+);
+
+export type LaunchAssetRow = typeof launchAssets.$inferSelect;
+export type NewLaunchAsset = typeof launchAssets.$inferInsert;
+
+/**
  * Walking-skeleton table. Its only job is to prove a real read/write travels
  * through every layer (env -> drizzle -> Neon Postgres) in M0. The real domain
  * schema (users, freelancer_profiles, roadmaps, missions, xp_ledger, …) lands
