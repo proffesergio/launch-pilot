@@ -31,6 +31,7 @@
     "signedInAs": "Signed in as {email}",
     "signOut": "Sign out",
     "startOnboarding": "Start: tell us about your skill",
+    "viewRoadmap": "View your roadmap",
     "profile": {
       "skill": "Skill",
       "platform": "Platform",
@@ -75,6 +76,13 @@
     "next": "Next",
     "finish": "Build my roadmap",
     "error": "Saving failed. Your answers are still here — try again."
+  },
+  "roadmap": {
+    "title": "Your 90-day roadmap",
+    "subtitle": "Phase by phase, mission by mission — boss missions unlock the next phase.",
+    "phase": "Phase {number}",
+    "effort": "~{minutes} min · {xp} XP",
+    "locked": "Locked"
   },
   "home": {
     "title": "Welcome to LaunchPilot",

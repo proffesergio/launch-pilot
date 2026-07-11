@@ -1,0 +1,422 @@
+/**
+ * Mission template catalog v0 (M2, ADR-0011: templates live in-repo until the
+ * M9 admin CMS). Three phases — Foundation → Go Live → First Orders — each
+ * gated by one boss mission per platform. XP is computed from estMinutes and
+ * category by src/lib/xp.ts, never authored by hand.
+ *
+ * Conditions: `platforms` scopes to a marketplace; `onlyEnglishConfidence`
+ * includes a mission only for those users; `skipForExperience` drops it for
+ * users past it.
+ */
+
+export const MISSIONS_VERSION = "0.1.0";
+
+export const missionTemplates = [
+  // ── Phase 1 — Foundation ──────────────────────────────────────────────
+  {
+    key: "mindset_commit",
+    phase: 1,
+    quest: "foundations",
+    order: 0,
+    category: "mindset",
+    type: "quest",
+    estMinutes: 15,
+    completionKind: "self_attest",
+    platforms: "all",
+    title: {
+      bn: "আপনার ৩০ মিনিটের প্রতিশ্রুতি",
+      en: "Your 30-minute promise",
+    },
+    objective: {
+      bn: "দিনের কোন সময়টা ফ্রিল্যান্সিংয়ের জন্য রাখবেন ঠিক করুন, আর টানা ৭ দিনের পরিকল্পনা লিখুন।",
+      en: "Pick the time of day you'll give to freelancing and write down your plan for the next 7 days.",
+    },
+  },
+  {
+    key: "skill_inventory",
+    phase: 1,
+    quest: "foundations",
+    order: 1,
+    category: "skill",
+    type: "quest",
+    estMinutes: 25,
+    completionKind: "self_attest",
+    platforms: "all",
+    title: {
+      bn: "আপনার দক্ষতার তালিকা",
+      en: "Your skill inventory",
+    },
+    objective: {
+      bn: "আপনার দক্ষতায় কী কী কাজ করতে পারেন তার তালিকা করুন, আর কোন কাজটা সবচেয়ে ভালো পারেন সেটা চিহ্নিত করুন।",
+      en: "List every task you can do with your skill, and mark the one you do best — that's your first service.",
+    },
+  },
+  {
+    key: "skill_sharpen",
+    phase: 1,
+    quest: "foundations",
+    order: 2,
+    category: "skill",
+    type: "weekly",
+    estMinutes: 60,
+    completionKind: "self_attest",
+    platforms: "all",
+    skipForExperience: ["experienced"],
+    title: {
+      bn: "দক্ষতা ঝালাই",
+      en: "Sharpen the craft",
+    },
+    objective: {
+      bn: "আপনার সেরা কাজটির উপর একটি ফ্রি টিউটোরিয়াল শেষ করুন এবং যা শিখলেন তা একবার নিজে করে দেখুন।",
+      en: "Finish one free tutorial on your best task and reproduce what it taught, once, yourself.",
+    },
+  },
+  {
+    key: "english_client_basics",
+    phase: 1,
+    quest: "foundations",
+    order: 3,
+    category: "skill",
+    type: "quest",
+    estMinutes: 30,
+    completionKind: "self_attest",
+    platforms: "all",
+    onlyEnglishConfidence: ["low"],
+    title: {
+      bn: "ক্লায়েন্টের সাথে ইংরেজি: প্রথম ধাপ",
+      en: "Client English: first steps",
+    },
+    objective: {
+      bn: "অ্যাটলাসের সাথে ৫টি সাধারণ ক্লায়েন্ট-বাক্য অনুশীলন করুন: সালাম, কাজ বুঝে নেওয়া, সময় চাওয়া, ডেলিভারি, ধন্যবাদ।",
+      en: "Practice 5 core client sentences with Atlas: greeting, confirming the task, asking for time, delivering, thanking.",
+    },
+  },
+  {
+    key: "portfolio_seed",
+    phase: 1,
+    quest: "foundations",
+    order: 4,
+    category: "skill",
+    type: "quest",
+    estMinutes: 90,
+    completionKind: "evidence",
+    platforms: "all",
+    title: {
+      bn: "দুটি নমুনা কাজ বানান",
+      en: "Create two sample works",
+    },
+    objective: {
+      bn: "বাস্তব ক্লায়েন্টের কাজের মতো দুটি 'স্পেক প্রজেক্ট' বানান — এগুলোই আপনার প্রথম পোর্টফোলিও।",
+      en: "Create two 'spec projects' that mirror real client work — these become your first portfolio.",
+    },
+  },
+  {
+    key: "payout_setup",
+    phase: 1,
+    quest: "foundations",
+    order: 5,
+    category: "profile",
+    type: "quest",
+    estMinutes: 40,
+    completionKind: "self_attest",
+    platforms: "all",
+    title: {
+      bn: "টাকা পাওয়ার রাস্তা তৈরি করুন",
+      en: "Set up your payout path",
+    },
+    objective: {
+      bn: "Payoneer অ্যাকাউন্ট খুলে যাচাই শুরু করুন এবং বিকাশ লিংক করার ধাপগুলো পড়ে রাখুন — প্রথম আয়ের আগেই।",
+      en: "Open a Payoneer account, start verification, and read the bKash linking steps — before your first earning, not after.",
+    },
+  },
+  {
+    key: "boss_foundation_review",
+    phase: 1,
+    quest: "foundations",
+    order: 6,
+    category: "mindset",
+    type: "boss",
+    estMinutes: 20,
+    completionKind: "self_attest",
+    platforms: "all",
+    title: {
+      bn: "বস মিশন: ভিত্তি সম্পূর্ণ",
+      en: "Boss: foundation complete",
+    },
+    objective: {
+      bn: "অ্যাটলাসের সাথে আপনার নমুনা কাজ ও পরিকল্পনা পর্যালোচনা করুন। পাশ করলে পরের ধাপ খুলবে: প্রোফাইল তৈরি।",
+      en: "Review your samples and plan with Atlas. Passing unlocks the next phase: building your profile.",
+    },
+  },
+
+  // ── Phase 2 — Go Live ─────────────────────────────────────────────────
+  {
+    key: "profile_photo",
+    phase: 2,
+    quest: "go_live",
+    order: 10,
+    category: "profile",
+    type: "quest",
+    estMinutes: 30,
+    completionKind: "evidence",
+    platforms: "all",
+    title: {
+      bn: "পেশাদার প্রোফাইল ছবি",
+      en: "A professional profile photo",
+    },
+    objective: {
+      bn: "ভালো আলোয়, সাদামাটা ব্যাকগ্রাউন্ডে, ক্যামেরার দিকে তাকিয়ে একটি স্পষ্ট হেডশট তুলুন।",
+      en: "Take a clear headshot in good light, on a neutral background, facing the camera.",
+    },
+  },
+  {
+    key: "profile_bio_draft",
+    phase: 2,
+    quest: "go_live",
+    order: 11,
+    category: "profile",
+    type: "quest",
+    estMinutes: 45,
+    completionKind: "self_attest",
+    platforms: "all",
+    title: {
+      bn: "প্রোফাইল পরিচিতি লিখুন",
+      en: "Draft your profile bio",
+    },
+    objective: {
+      bn: "অ্যাটলাসের সাহায্যে নির্দিষ্ট, বিশেষায়িত পরিচিতি লিখুন — সাধারণ 'ফ্রিল্যান্সার' নয়, আপনার সেরা কাজটির বিশেষজ্ঞ।",
+      en: "With Atlas, write a specific, specialized bio — not a generic 'freelancer', but the specialist of your best task.",
+    },
+  },
+  {
+    key: "fiverr_gig_research",
+    phase: 2,
+    quest: "go_live",
+    order: 12,
+    category: "profile",
+    type: "quest",
+    estMinutes: 40,
+    completionKind: "self_attest",
+    platforms: ["fiverr"],
+    title: {
+      bn: "গিগ গবেষণা",
+      en: "Gig research",
+    },
+    objective: {
+      bn: "আপনার সাবক্যাটাগরির সেরা ১০টি গিগ দেখুন: শিরোনামের কীওয়ার্ড, দাম, আর গ্যালারিতে কী আছে — নোট নিন।",
+      en: "Study the top 10 gigs in your subcategory: title keywords, prices, and what's in their galleries — take notes.",
+    },
+  },
+  {
+    key: "fiverr_gig_draft",
+    phase: 2,
+    quest: "go_live",
+    order: 13,
+    category: "profile",
+    type: "quest",
+    estMinutes: 60,
+    completionKind: "self_attest",
+    platforms: ["fiverr"],
+    title: {
+      bn: "গিগ খসড়া: পাঁচটি অংশ",
+      en: "Gig draft: all five sections",
+    },
+    objective: {
+      bn: "ওভারভিউ, তিন প্যাকেজের দাম (২০% কমিশন মাথায় রেখে), বিবরণ ও FAQ, রিকোয়ারমেন্টস, গ্যালারি — সব খসড়া করুন।",
+      en: "Draft all five: overview, three-package pricing (with the 20% commission in mind), description & FAQ, requirements, gallery.",
+    },
+  },
+  {
+    key: "upwork_specialized_profile",
+    phase: 2,
+    quest: "go_live",
+    order: 12,
+    category: "profile",
+    type: "quest",
+    estMinutes: 60,
+    completionKind: "self_attest",
+    platforms: ["upwork"],
+    title: {
+      bn: "বিশেষায়িত আপওয়ার্ক প্রোফাইল",
+      en: "A specialized Upwork profile",
+    },
+    objective: {
+      bn: "নির্দিষ্ট শিরোনাম, ৬–১২টি নমুনা (স্পেক প্রজেক্ট চলবে), আর সম্পূর্ণ তথ্য — অসম্পূর্ণতাই প্রত্যাখ্যানের প্রধান কারণ।",
+      en: "Specific headline, 6–12 samples (spec projects count), complete details — incompleteness is the top rejection cause.",
+    },
+  },
+  {
+    key: "upwork_id_verify",
+    phase: 2,
+    quest: "go_live",
+    order: 13,
+    category: "profile",
+    type: "quest",
+    estMinutes: 20,
+    completionKind: "self_attest",
+    platforms: ["upwork"],
+    title: {
+      bn: "পরিচয় যাচাই",
+      en: "Verify your identity",
+    },
+    objective: {
+      bn: "সরকার-প্রদত্ত আইডির স্পষ্ট ছবি দিন; খেয়াল রাখুন সব তথ্য প্রোফাইলের সাথে হুবহু মেলে।",
+      en: "Submit clear photos of your government ID; make sure every detail matches your profile exactly.",
+    },
+  },
+  {
+    key: "boss_profile_live",
+    phase: 2,
+    quest: "go_live",
+    order: 19,
+    category: "profile",
+    type: "boss",
+    estMinutes: 45,
+    completionKind: "evidence",
+    platforms: "all",
+    title: {
+      bn: "বস মিশন: প্রোফাইল লাইভ",
+      en: "Boss: profile live",
+    },
+    objective: {
+      bn: "আপনার প্রোফাইল (ফাইভারে গিগসহ) নিজ হাতে প্রকাশ করুন — অ্যাটলাস প্রতিটি স্ক্রিনে পথ দেখাবে, কাজটা আপনার।",
+      en: "Publish your profile (with your gig, on Fiverr) with your own hands — Atlas guides every screen, you do the clicking.",
+    },
+  },
+
+  // ── Phase 3 — First Orders ────────────────────────────────────────────
+  {
+    key: "daily_market_walk",
+    phase: 3,
+    quest: "first_orders",
+    order: 20,
+    category: "outreach",
+    type: "daily",
+    estMinutes: 15,
+    completionKind: "self_attest",
+    platforms: "all",
+    title: {
+      bn: "প্রতিদিনের বাজার-হাঁটা",
+      en: "The daily market walk",
+    },
+    objective: {
+      bn: "প্রতিদিন ১৫ মিনিট: নতুন কাজের পোস্ট বা ব্রিফ দেখুন, আর অন্তত একটি সংরক্ষণ করুন যা আপনি করতে পারতেন।",
+      en: "15 minutes daily: scan new job posts or briefs, and save at least one you could have done.",
+    },
+  },
+  {
+    key: "first_proposals",
+    phase: 3,
+    quest: "first_orders",
+    order: 21,
+    category: "outreach",
+    type: "weekly",
+    estMinutes: 60,
+    completionKind: "self_attest",
+    platforms: ["upwork"],
+    title: {
+      bn: "প্রথম পাঁচটি প্রস্তাব",
+      en: "Your first five proposals",
+    },
+    objective: {
+      bn: "নতুন ক্লায়েন্ট, $৫০–৫০০ প্রজেক্ট, ১০টির কম প্রস্তাব — এমন কাজে অ্যাটলাসের সাথে লেখা ৫টি প্রস্তাব পাঠান।",
+      en: "Send 5 proposals written with Atlas — to newer clients, $50–500 projects, with fewer than 10 proposals.",
+    },
+  },
+  {
+    key: "fiverr_first_briefs",
+    phase: 3,
+    quest: "first_orders",
+    order: 21,
+    category: "outreach",
+    type: "weekly",
+    estMinutes: 45,
+    completionKind: "self_attest",
+    platforms: ["fiverr"],
+    title: {
+      bn: "ব্রিফে সাড়া দিন",
+      en: "Answer buyer briefs",
+    },
+    objective: {
+      bn: "আপনার গিগের সাথে মেলে এমন ক্রেতা-ব্রিফগুলোতে অ্যাটলাসের সাথে তৈরি কাস্টম অফার পাঠান।",
+      en: "Respond to matching buyer briefs with custom offers drafted with Atlas.",
+    },
+  },
+  {
+    key: "client_reply_drill",
+    phase: 3,
+    quest: "first_orders",
+    order: 22,
+    category: "outreach",
+    type: "quest",
+    estMinutes: 30,
+    completionKind: "self_attest",
+    platforms: "all",
+    onlyEnglishConfidence: ["low", "medium"],
+    title: {
+      bn: "ক্লায়েন্ট-উত্তর অনুশীলন",
+      en: "Client reply drill",
+    },
+    objective: {
+      bn: "অ্যাটলাস ক্লায়েন্ট সেজে ৩টি বার্তা পাঠাবে; আপনি ইংরেজিতে উত্তর দেবেন, অ্যাটলাস ঠিক করে দেবে।",
+      en: "Atlas plays a client and sends 3 messages; you reply in English, Atlas corrects you.",
+    },
+  },
+  {
+    key: "delivery_dry_run",
+    phase: 3,
+    quest: "first_orders",
+    order: 23,
+    category: "delivery",
+    type: "quest",
+    estMinutes: 45,
+    completionKind: "self_attest",
+    platforms: "all",
+    title: {
+      bn: "ডেলিভারির মহড়া",
+      en: "Delivery dry run",
+    },
+    objective: {
+      bn: "একটি নমুনা অর্ডার শুরু থেকে শেষ পর্যন্ত অনুশীলন করুন: কাজ বুঝে নেওয়া → করা → গুছিয়ে ডেলিভারি বার্তাসহ পাঠানো।",
+      en: "Rehearse one order end to end: confirm the task → do it → deliver tidily with a proper delivery message.",
+    },
+  },
+  {
+    key: "review_ask_script",
+    phase: 3,
+    quest: "first_orders",
+    order: 24,
+    category: "delivery",
+    type: "side",
+    estMinutes: 15,
+    completionKind: "self_attest",
+    platforms: "all",
+    title: {
+      bn: "রিভিউ চাওয়ার ভদ্র উপায়",
+      en: "The polite review ask",
+    },
+    objective: {
+      bn: "ডেলিভারির পরে রিভিউ চাওয়ার একটি ছোট, চাপহীন বার্তা তৈরি রাখুন — নিয়ম মেনে, কখনো রিভিউয়ের বিনিময়ে কিছু নয়।",
+      en: "Prepare a short, pressure-free message asking for a review after delivery — within the rules, never in exchange for anything.",
+    },
+  },
+  {
+    key: "boss_first_earning",
+    phase: 3,
+    quest: "first_orders",
+    order: 29,
+    category: "delivery",
+    type: "boss",
+    estMinutes: 10,
+    completionKind: "self_attest",
+    platforms: "all",
+    title: {
+      bn: "বস মিশন: প্রথম আয়",
+      en: "Boss: first earning",
+    },
+    objective: {
+      bn: "আপনার প্রথম প্রকৃত আয় রিপোর্ট করুন — এটাই সেই মুহূর্ত। এরপর লেভেল-আপ পর্ব শুরু।",
+      en: "Report your first real earning — this is the moment. The level-up chapter starts after it.",
+    },
+  },
+] as const;

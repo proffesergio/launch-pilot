@@ -35,6 +35,38 @@ export const freelancerProfiles = pgTable("freelancer_profiles", {
 export type FreelancerProfile = typeof freelancerProfiles.$inferSelect;
 
 /**
+ * A generated roadmap (M2, architecture §4). Pins the content versions it was
+ * generated from so a later track update never rewrites a user's live plan.
+ * Mission templates live in-repo (ADR-0011); instances reference them by key.
+ */
+export const userRoadmaps = pgTable("user_roadmaps", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  trackVersionPins: jsonb("track_version_pins").notNull(),
+  generatedBy: text("generated_by").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export const roadmapMissions = pgTable("roadmap_missions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  roadmapId: uuid("roadmap_id")
+    .notNull()
+    .references(() => userRoadmaps.id, { onDelete: "cascade" }),
+  missionKey: text("mission_key").notNull(),
+  phase: integer("phase").notNull(),
+  quest: text("quest").notNull(),
+  position: integer("position").notNull(),
+  status: text("status").notNull().default("locked"), // unlocked | locked
+  unlockedAt: timestamp("unlocked_at", { withTimezone: true }),
+});
+
+export type RoadmapMissionRow = typeof roadmapMissions.$inferSelect;
+
+/**
  * Walking-skeleton table. Its only job is to prove a real read/write travels
  * through every layer (env -> drizzle -> Neon Postgres) in M0. The real domain
  * schema (users, freelancer_profiles, roadmaps, missions, xp_ledger, …) lands

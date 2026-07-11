@@ -121,6 +121,24 @@ the coach refuses automation asks.
 **Consequences:** + Delivers the owner's intent with zero TOS exposure; reuses grounding +
 mission systems. − One more pre-checkpoint slice; curated track content must be kept current.
 
+## ADR-0011 — Mission templates in-repo; deterministic roadmap generation
+**Date:** 2026-07-11 · **Status:** accepted
+**Context:** Architecture §4 sketched a `missions` DB table. M2 needs a mission catalog and
+a generator, but DB-authored content without an authoring UI (M9) means hand-edited rows and
+unreviewable content changes. Separately, AI-generated roadmaps would make the M2 exit
+criterion ("two profiles yield demonstrably different roadmaps") non-deterministic and add
+cost to every onboarding.
+**Decision:** Mission templates and platform tracks are versioned TypeScript data in
+`content/` (Zod-validated in tests; bilingual inline; rules cited, heuristics labeled).
+`roadmap_missions` references templates by key + pinned catalog version instead of FK. The
+generator is a pure function of (profile, content) — filterable by platform, English
+confidence, and experience — with XP computed from the §7 formula. Sonnet enrichment can
+layer on later without changing the contract. The `missions` DB table arrives with M9 admin
+authoring, migrating this catalog.
+**Consequences:** + Reviewable content diffs, deterministic + free generation, exit criterion
+is a unit test. − Content edits need a deploy until M9; template renames need key-migration
+care once users hold live roadmaps.
+
 ---
 
 ### Template for new ADRs

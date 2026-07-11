@@ -9,7 +9,9 @@ import { captureServer } from "@/lib/analytics";
 import { getOrCreateCorrelationId } from "@/lib/correlation";
 import { transition } from "@/lib/journey";
 import { logger } from "@/lib/logger";
+import { getFlag } from "@/lib/flags";
 import { OnboardingAnswersSchema } from "@/lib/onboarding";
+import { ensureRoadmap } from "@/lib/roadmap-service";
 import { aiClassifySkill } from "@/lib/skill-classifier";
 import { normalizeSkill } from "@/lib/skills";
 
@@ -75,6 +77,16 @@ export async function completeOnboarding(
   } catch (err) {
     log.error({ event: "onboarding.save_failed", err });
     return { ok: false, code: "save_failed" };
+  }
+
+  // M2: a fresh profile flows straight into its roadmap (diagram 3a).
+  if (getFlag("m2_roadmap")) {
+    try {
+      await ensureRoadmap(session.user.id, correlationId);
+    } catch (err) {
+      // Roadmap can be generated later from the dashboard; onboarding stands.
+      log.error({ event: "onboarding.roadmap_failed", err });
+    }
   }
 
   await captureServer(session.user.id, "onboarding_completed", {

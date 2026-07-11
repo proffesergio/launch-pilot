@@ -45,7 +45,25 @@ test("a beginner completes onboarding and gets a profile", async ({ page }) => {
   await expect(summary).toBeVisible();
   await expect(summary).toContainText("graphic_design");
   await expect(summary).toContainText("fiverr");
-  await expect(summary).toContainText("skill_assessment");
+  // M2 auto-generates the roadmap, advancing the journey to foundation.
+  await expect(summary).toContainText("foundation");
+
+  // The roadmap renders: fiverr-specific missions in, upwork ones out,
+  // first mission unlocked, boss missions gating each phase.
+  await page.getByTestId("view-roadmap").click();
+  await expect(page).toHaveURL(/\/roadmap$/);
+  await expect(page.getByTestId("mission-fiverr_gig_draft")).toBeVisible();
+  await expect(page.getByTestId("mission-upwork_id_verify")).toHaveCount(0);
+  await expect(page.getByTestId("mission-mindset_commit")).toHaveAttribute(
+    "data-status",
+    "unlocked",
+  );
+  await expect(page.getByTestId("mission-boss_first_earning")).toHaveAttribute(
+    "data-status",
+    "locked",
+  );
+  // Low English confidence pulled in the scaffolding mission.
+  await expect(page.getByTestId("mission-english_client_basics")).toBeVisible();
 });
 
 test("both locales render the wizard", async ({ page }) => {
