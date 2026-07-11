@@ -5,7 +5,11 @@
  * project key exists; the env override stays for CI and emergencies.
  */
 
-export type FlagName = "m1_onboarding" | "m2_roadmap" | "m3_coach";
+export type FlagName =
+  | "m1_onboarding"
+  | "m2_roadmap"
+  | "m3_coach"
+  | "m4_gamification";
 
 export function getFlag(name: FlagName): boolean {
   const override = process.env[`FLAG_${name.toUpperCase()}`];

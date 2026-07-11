@@ -19,6 +19,7 @@ import { getEnv } from "@/lib/env";
 import { getFlag } from "@/lib/flags";
 import { retrieveGrounding } from "@/lib/grounding";
 import { logger } from "@/lib/logger";
+import { awardXp } from "@/lib/xp-service";
 
 const BodySchema = z.object({
   message: z.string().trim().min(1).max(2000),
@@ -162,6 +163,15 @@ export async function POST(request: Request) {
             },
           });
         log.info({ event: "coach.finish", userId, tokensIn, tokensOut, cost });
+        if (getFlag("m4_gamification")) {
+          // First coach exchange of the day earns XP; repeats no-op.
+          await awardXp({
+            userId,
+            kind: "coach_session",
+            sourceId: today,
+            correlationId,
+          });
+        }
       } catch (err) {
         // Accounting failure must not break the reply — but it is loud.
         log.error({ event: "coach.accounting_failed", err });

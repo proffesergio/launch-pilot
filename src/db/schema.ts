@@ -5,6 +5,7 @@ import {
   primaryKey,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 
@@ -107,6 +108,33 @@ export const aiUsageDaily = pgTable(
   },
   (t) => [primaryKey({ columns: [t.userId, t.usageDate] })],
 );
+
+/**
+ * XP ledger (M4, pulled forward — spec 2026-07-11): append-only, one row per
+ * award. Totals, level, streak, and the activity timeline are all derived
+ * from it. `sourceId` makes awards idempotent within (user, kind): "once"
+ * for one-shot kinds, the UTC day for daily kinds, the mission row id for
+ * mission_completed. `day` denormalizes created_at for cheap streak queries.
+ */
+export const xpEvents = pgTable(
+  "xp_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    kind: text("kind").notNull(),
+    amount: integer("amount").notNull(),
+    sourceId: text("source_id").notNull(),
+    day: text("day").notNull(), // YYYY-MM-DD (UTC)
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [uniqueIndex("xp_events_award_once").on(t.userId, t.kind, t.sourceId)],
+);
+
+export type XpEventRow = typeof xpEvents.$inferSelect;
 
 /**
  * Walking-skeleton table. Its only job is to prove a real read/write travels

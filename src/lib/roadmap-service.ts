@@ -5,8 +5,10 @@ import { freelancerProfiles, roadmapMissions, userRoadmaps } from "@/db/schema";
 import { captureServer } from "./analytics";
 import { loadMissionTemplates, loadPlatformTracks } from "./content";
 import { transition, type JourneyState } from "./journey";
+import { getFlag } from "./flags";
 import { logger } from "./logger";
 import { generateRoadmap, type RoadmapProfile } from "./roadmap";
+import { awardXp } from "./xp-service";
 
 /**
  * Creates and persists a user's roadmap from their profile (idempotent: an
@@ -63,6 +65,15 @@ export async function ensureRoadmap(userId: string, correlationId: string) {
       .update(freelancerProfiles)
       .set({ journeyState: nextState, updatedAt: new Date() })
       .where(eq(freelancerProfiles.userId, userId));
+  }
+
+  if (getFlag("m4_gamification")) {
+    await awardXp({
+      userId,
+      kind: "roadmap_generated",
+      sourceId: "once",
+      correlationId,
+    });
   }
 
   await captureServer(userId, "roadmap_generated", {

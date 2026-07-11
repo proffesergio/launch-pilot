@@ -14,6 +14,7 @@ import { OnboardingAnswersSchema } from "@/lib/onboarding";
 import { ensureRoadmap } from "@/lib/roadmap-service";
 import { aiClassifySkill } from "@/lib/skill-classifier";
 import { normalizeSkill } from "@/lib/skills";
+import { awardXp } from "@/lib/xp-service";
 
 export type CompleteOnboardingResult =
   | { ok: true }
@@ -77,6 +78,15 @@ export async function completeOnboarding(
   } catch (err) {
     log.error({ event: "onboarding.save_failed", err });
     return { ok: false, code: "save_failed" };
+  }
+
+  if (getFlag("m4_gamification")) {
+    await awardXp({
+      userId: session.user.id,
+      kind: "onboarding_completed",
+      sourceId: "once",
+      correlationId,
+    });
   }
 
   // M2: a fresh profile flows straight into its roadmap (diagram 3a).

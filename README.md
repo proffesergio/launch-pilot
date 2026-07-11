@@ -32,3 +32,4 @@ freelance-marketplace accounts. It guides; you do the work.
 
 Not yet — there is no app to run. Once the walking skeleton lands (Phase 2), this section
 becomes a one-command setup: `pnpm setup` → working local dev with seeded data in < 10 min.
+
