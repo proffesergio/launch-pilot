@@ -12,15 +12,15 @@ test.describe("Bangla-preferring browser", () => {
   }) => {
     await page.goto("/");
     await expect(page).toHaveURL(/\/bn$/);
-    await expect(
-      page.getByRole("heading", { name: "লঞ্চপাইলটে স্বাগতম" }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(
+      "আপনার প্রথম ফ্রিল্যান্স আয়",
+    );
 
     await page.getByRole("link", { name: "English" }).click();
     await expect(page).toHaveURL(/\/en$/);
-    await expect(
-      page.getByRole("heading", { name: "Welcome to LaunchPilot" }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(
+      "your first freelance income",
+    );
   });
 });
 
@@ -42,6 +42,32 @@ test.describe("English-preferring browser", () => {
   });
 });
 
+test("phone OTP sign-in (primary method) reaches the dashboard", async ({
+  page,
+  request,
+}) => {
+  test.skip(!hasDb, "DATABASE_URL not set");
+
+  // Unique, valid BD mobile per run: 017 + 8 digits.
+  const local = `017${String(Date.now()).slice(-8)}`;
+  await page.goto("/en/sign-in");
+  await page.getByTestId("phone-input").fill(local);
+  await page.getByTestId("send-code").click();
+  // The code step only renders after the send-otp call resolves, which is
+  // also the moment the dev mailbox is guaranteed to hold the code.
+  await expect(page.getByTestId("otp-input")).toBeVisible();
+
+  const mailbox = await request.get(
+    `/api/dev/otp?phone=${encodeURIComponent(`+880${local.slice(1)}`)}`,
+  );
+  expect(mailbox.ok()).toBeTruthy();
+  const { code } = (await mailbox.json()) as { code: string };
+
+  await page.getByTestId("otp-input").fill(code);
+  await page.getByTestId("verify-code").click();
+  await expect(page).toHaveURL(/\/dashboard$/, { timeout: 20_000 });
+});
+
 test("magic-link sign-in reaches the dashboard and signs out", async ({
   page,
   request,
@@ -50,6 +76,7 @@ test("magic-link sign-in reaches the dashboard and signs out", async ({
 
   const email = `e2e-${Date.now()}@launchpilot.test`;
   await page.goto("/en/sign-in");
+  await page.getByTestId("show-other-options").click();
   await page.getByLabel("Your email address").fill(email);
   await page.getByRole("button", { name: "Send me a sign-in link" }).click();
   await expect(page.getByText("Link sent.", { exact: false })).toBeVisible();

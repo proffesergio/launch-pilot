@@ -1,6 +1,11 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 
-import { recordMagicLink, readLastMagicLink } from "./dev-mailbox";
+import {
+  readLastMagicLink,
+  readOtp,
+  recordMagicLink,
+  recordOtp,
+} from "./dev-mailbox";
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -30,5 +35,30 @@ describe("dev mailbox (magic-link test hook)", () => {
     recordMagicLink("user@example.com", "http://example.com/magic?token=leak");
     expect(readLastMagicLink()).toBeNull();
     expect(readLastMagicLink("user@example.com")).toBeNull();
+  });
+
+  it("survives a fresh module instance (Next dev recycles workers)", async () => {
+    vi.stubEnv("NODE_ENV", "development");
+    recordMagicLink("worker-a@example.com", "http://localhost:3000/magic?token=xyz");
+    recordOtp("+8801512345678", "111222");
+
+    // Simulate the write and the read landing in different dev-server
+    // workers: a re-imported module must still see the recorded values.
+    vi.resetModules();
+    const fresh = await import("./dev-mailbox");
+    expect(fresh.readLastMagicLink("worker-a@example.com")?.url).toContain("token=xyz");
+    expect(fresh.readOtp("+8801512345678")).toBe("111222");
+  });
+
+  it("stores OTPs per phone outside production, never in production", () => {
+    vi.stubEnv("NODE_ENV", "development");
+    recordOtp("+8801712345678", "123456");
+    recordOtp("+8801912345678", "654321");
+    expect(readOtp("+8801712345678")).toBe("123456");
+    expect(readOtp("+8801912345678")).toBe("654321");
+
+    vi.stubEnv("NODE_ENV", "production");
+    recordOtp("+8801712345678", "999999");
+    expect(readOtp("+8801712345678")).toBeNull();
   });
 });

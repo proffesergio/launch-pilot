@@ -9,6 +9,7 @@ test.skip(!process.env.DATABASE_URL, "DATABASE_URL not set");
 
 async function signIn(page: Page, email: string) {
   await page.goto("/en/sign-in");
+  await page.getByTestId("show-other-options").click();
   await page.getByLabel("Your email address").fill(email);
   await page.getByRole("button", { name: "Send me a sign-in link" }).click();
   await expect(page.getByText("Link sent.", { exact: false })).toBeVisible();
@@ -42,7 +43,8 @@ test("a beginner completes onboarding and gets a profile", async ({ page }) => {
   await page.getByTestId("experience-none").click();
   await page.getByTestId("onboarding-next").click();
 
-  await expect(page).toHaveURL(/\/dashboard$/);
+  // Finish runs Haiku classification + profile upsert + roadmap generation.
+  await expect(page).toHaveURL(/\/dashboard$/, { timeout: 60_000 });
   const summary = page.getByTestId("profile-summary");
   await expect(summary).toBeVisible();
   await expect(summary).toContainText("graphic_design");
@@ -53,7 +55,9 @@ test("a beginner completes onboarding and gets a profile", async ({ page }) => {
   // The roadmap renders: fiverr-specific missions in, upwork ones out,
   // first mission unlocked, boss missions gating each phase.
   await page.getByTestId("view-roadmap").click();
-  await expect(page).toHaveURL(/\/roadmap$/);
+  // First visit compiles /roadmap on the dev server — same allowance as the
+  // dashboard hop above.
+  await expect(page).toHaveURL(/\/roadmap$/, { timeout: 60_000 });
   await expect(page.getByTestId("mission-fiverr_gig_draft")).toBeVisible();
   await expect(page.getByTestId("mission-upwork_id_verify")).toHaveCount(0);
   await expect(page.getByTestId("mission-mindset_commit")).toHaveAttribute(

@@ -1,10 +1,10 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { magicLink } from "better-auth/plugins";
+import { magicLink, phoneNumber } from "better-auth/plugins";
 
 import { getDb } from "@/db";
-import { recordMagicLink } from "./dev-mailbox";
+import { recordMagicLink, recordOtp } from "./dev-mailbox";
 import { getEnv, type Env } from "./env";
 import { logger } from "./logger";
 
@@ -38,6 +38,31 @@ export function createAuth(env: Env, db: Db) {
         }
       : undefined,
     plugins: [
+      // Primary sign-in: phone OTP — everyone in the audience has a phone
+      // number; many don't use email. SMS delivery is the dev mailbox until
+      // an SMS provider account exists (owner action); the flow is real.
+      phoneNumber({
+        sendOTP: async ({ phoneNumber: phone, code }) => {
+          recordOtp(phone, code);
+          if (process.env.NODE_ENV === "production") {
+            logger.error(
+              { event: "auth.otp.undeliverable", phone },
+              "OTP requested but no SMS provider is configured",
+            );
+            return;
+          }
+          logger.info(
+            { event: "auth.otp.dev_mailbox", phone },
+            "OTP captured in dev mailbox (/api/dev/otp)",
+          );
+        },
+        signUpOnVerification: {
+          // Phone users may have no email; better-auth requires one on the
+          // user row, so mint a stable placeholder in our own namespace.
+          getTempEmail: (phone) => `${phone.replace("+", "")}@phone.launchpilot.app`,
+          getTempName: (phone) => phone,
+        },
+      }),
       magicLink({
         sendMagicLink: async ({ email, url }) => {
           // No email provider in M0 (Resend lands in its own slice). Outside

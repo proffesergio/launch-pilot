@@ -69,8 +69,10 @@ export function OnboardingWizard() {
     setStatus("saving");
     const result = await completeOnboarding(draft);
     if (result.ok) {
+      // No router.refresh() here: in Next 16 a refresh issued right after
+      // push cancels the pending navigation, and the completed server action
+      // has already invalidated the client cache for the dashboard.
       router.push("/dashboard");
-      router.refresh();
     } else {
       setStatus("error");
     }

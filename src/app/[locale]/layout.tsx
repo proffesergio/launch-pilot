@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Anek_Bangla, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 
@@ -7,9 +7,11 @@ import { routing } from "@/i18n/routing";
 import { PostHogProvider } from "../providers";
 import "../globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+// One variable font covering Bangla + Latin: characterful, and a single
+// download on 4G. Geist Mono stays for numbers and technical labels.
+const anekBangla = Anek_Bangla({
+  variable: "--font-anek",
+  subsets: ["bengali", "latin"],
 });
 
 const geistMono = Geist_Mono({
@@ -37,7 +39,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${anekBangla.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <NextIntlClientProvider>

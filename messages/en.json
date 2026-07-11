@@ -12,6 +12,16 @@
   "auth": {
     "signIn": {
       "title": "Sign in to LaunchPilot",
+      "phoneLabel": "Your mobile number",
+      "phonePlaceholder": "01712 345678",
+      "sendCode": "Send me a code",
+      "codeSentTo": "We sent a 6-digit code to {phone}. In this preview, codes appear in the developer mailbox.",
+      "verify": "Verify and sign in",
+      "wrongPhone": "Wrong number? Go back",
+      "invalidPhone": "That doesn't look like a Bangladeshi mobile number (01XXXXXXXXX).",
+      "wrongCode": "That code didn't match. Check and try again.",
+      "otherOptions": "or",
+      "useGoogleOrEmail": "Use Google or email instead",
       "emailLabel": "Your email address",
       "emailPlaceholder": "name@example.com",
       "sendLink": "Send me a sign-in link",
@@ -93,6 +103,39 @@
     "phase": "Phase {number}",
     "effort": "~{minutes} min · {xp} XP",
     "locked": "Locked"
+  },
+  "landing": {
+    "badge": "Free — pay only after you earn",
+    "signIn": "Sign in",
+    "headline": "Any skill you have can become",
+    "headlineAccent": "your first freelance income",
+    "sub": "Atlas, your AI coach, turns your skill into a step-by-step 90-day path — in Bangla or English — from zero portfolio to your first real order on Fiverr or Upwork.",
+    "cta": "Start with your phone number",
+    "ctaHint": "under a minute, no card, no spam",
+    "path": {
+      "0": "Foundation",
+      "1": "Go live",
+      "2": "First orders",
+      "3": "First earning"
+    },
+    "howTitle": "How it works",
+    "steps": {
+      "0": {
+        "title": "Tell Atlas your skill",
+        "body": "Writing, design, video, anything — in your own words, in your own language. Five questions, under five minutes."
+      },
+      "1": {
+        "title": "Get your 90-day roadmap",
+        "body": "A personal path of small daily missions built for your platform, your hours, and your level — not a generic course."
+      },
+      "2": {
+        "title": "Coach through every step",
+        "body": "Atlas drafts your profile, your gig, your client messages — and you publish them yourself. Verified platform facts only."
+      }
+    },
+    "honestTitle": "The honest part",
+    "honestBody": "We don't promise you'll be rich in 60 days — nobody honest can. We promise a real path: show up ~30 minutes a day, complete the missions, and you'll know exactly what to do next, including the unglamorous parts like fees, taxes on payouts, and how money actually reaches bKash. LaunchPilot never touches your marketplace account. It's free, and after your first real earning, you pay what you think it was worth.",
+    "footer": "Made for Bangladesh"
   },
   "home": {
     "title": "Welcome to LaunchPilot",

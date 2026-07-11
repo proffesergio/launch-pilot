@@ -21,9 +21,10 @@ function env(extra: Record<string, string> = {}): Env {
 }
 
 describe("createAuth", () => {
-  it("registers the magic-link plugin", () => {
+  it("registers phone OTP (primary) and magic-link plugins", () => {
     const auth = createAuth(env(), db);
     const ids = (auth.options.plugins ?? []).map((p) => p.id);
+    expect(ids).toContain("phone-number");
     expect(ids).toContain("magic-link");
   });
 

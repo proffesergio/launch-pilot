@@ -2,6 +2,9 @@ import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 
 import { getEnv } from "@/lib/env";
+// Side effect: widen Node's per-attempt connect timeout, or every Neon fetch
+// dies with ETIMEDOUT on slow networks (see net-tuning.ts).
+import "@/lib/net-tuning";
 
 import { withConnectRetry } from "./fetch-retry";
 import * as schema from "./schema";
@@ -18,8 +21,11 @@ export function getDb() {
   if (!cached) {
     // Retry connect-phase failures only (see fetch-retry.ts) — first
     // connections on dual-stack networks are observably flaky.
-    neonConfig.fetchFunction = withConnectRetry((url, init) =>
-      fetch(url as string, init),
+    neonConfig.fetchFunction = withConnectRetry(
+      (url, init) => fetch(url as string, init),
+      // 5 attempts: some dev-machine networks drop several connects in a row.
+      // Connect-phase-only retries stay write-safe at any count.
+      { attempts: 5, delayMs: 400 },
     );
     const sql = neon(getEnv().DATABASE_URL);
     cached = drizzle(sql, { schema });

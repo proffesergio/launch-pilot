@@ -12,6 +12,7 @@ test.skip(
 
 async function signIn(page: Page, email: string) {
   await page.goto("/en/sign-in");
+  await page.getByTestId("show-other-options").click();
   await page.getByLabel("Your email address").fill(email);
   await page.getByRole("button", { name: "Send me a sign-in link" }).click();
   await expect(page.getByText("Link sent.", { exact: false })).toBeVisible();

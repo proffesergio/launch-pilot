@@ -1,18 +1,19 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
-import { useRouter } from "@/i18n/navigation";
 import { authClient } from "@/lib/auth-client";
 
 export function SignOutButton() {
   const t = useTranslations("dashboard");
-  const router = useRouter();
+  const locale = useLocale();
 
   async function signOut() {
     await authClient.signOut();
-    router.push("/sign-in");
-    router.refresh();
+    // Full navigation, not router.push + refresh: in Next 16 a refresh right
+    // after push cancels the navigation, and sign-out must also drop every
+    // cached authed page — a document load does both.
+    window.location.assign(`/${locale}/sign-in`);
   }
 
   return (
