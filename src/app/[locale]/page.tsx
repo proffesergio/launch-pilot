@@ -4,8 +4,11 @@ import { LocaleSwitcher } from "@/components/locale-switcher";
 import { RevealInView } from "@/components/reveal-in-view";
 import { Link } from "@/i18n/navigation";
 import { loadMissionTemplates } from "@/lib/content";
+import { getFlag } from "@/lib/flags";
+import { PLATFORMS } from "@/lib/platforms";
 import { SKILLS } from "@/lib/skills";
 import { FloatingSkills, type SkillChip } from "./landing/floating-skills";
+import { PlatformExplorer } from "./landing/platform-explorer";
 import { Tutorial } from "./landing/tutorial";
 
 const SKILL_EMOJI: Record<string, string> = {
@@ -80,6 +83,7 @@ const FEATURES = [
 export default function Home() {
   const t = useTranslations();
   const missionCount = loadMissionTemplates().length;
+  const showPlatforms = getFlag("m5_platforms");
 
   const skillChips: SkillChip[] = SKILLS.filter(
     (s) => s !== "general_freelancing",
@@ -104,7 +108,10 @@ export default function Home() {
 
   const stats: { value: string; label: string }[] = [
     { value: String(missionCount), label: t("landing.stats.missions") },
-    { value: "2", label: t("landing.stats.platforms") },
+    {
+      value: String(showPlatforms ? PLATFORMS.length : 2),
+      label: t("landing.stats.platforms"),
+    },
     { value: "2", label: t("landing.stats.languages") },
     { value: "$0", label: t("landing.stats.cost") },
   ];
@@ -216,6 +223,28 @@ export default function Home() {
           />
         </RevealInView>
       </section>
+
+      {/* ── Platform explorer: 17 launchpads, one honest coach ────── */}
+      {showPlatforms && (
+        <section id="platforms" className="border-t border-white/10">
+          <div className="mx-auto w-full max-w-5xl px-6 py-20">
+            <RevealInView>
+              <h2 className="max-w-2xl text-balance text-3xl font-bold tracking-tight text-stone-50">
+                {t("landing.platforms.title")}
+              </h2>
+              <p className="mt-2 max-w-2xl text-stone-400">
+                {t("landing.platforms.sub")}
+              </p>
+              <p className="mt-4 max-w-2xl rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-6 text-stone-300">
+                {t("landing.platforms.algoNote")}
+              </p>
+            </RevealInView>
+            <RevealInView className="mt-10" delay={0.1}>
+              <PlatformExplorer />
+            </RevealInView>
+          </div>
+        </section>
+      )}
 
       {/* ── Features ──────────────────────────────────────────────── */}
       <section id="features" className="tech-grid border-t border-white/10">

@@ -36,6 +36,15 @@ describe("OnboardingAnswersSchema", () => {
     ).toThrow();
   });
 
+  it("accepts every platform in the registry, job boards included", () => {
+    for (const platform of ["remoteok", "wellfound", "virtualvocations"]) {
+      expect(
+        OnboardingAnswersSchema.parse({ ...valid, targetPlatform: platform })
+          .targetPlatform,
+      ).toBe(platform);
+    }
+  });
+
   it("bounds weekly hours to a human range (1–80) and coerces strings", () => {
     expect(
       OnboardingAnswersSchema.parse({ ...valid, weeklyHours: "25" }).weeklyHours,

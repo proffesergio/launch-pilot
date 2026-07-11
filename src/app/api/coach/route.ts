@@ -19,6 +19,7 @@ import { getEnv } from "@/lib/env";
 import { getFlag } from "@/lib/flags";
 import { retrieveGrounding } from "@/lib/grounding";
 import { logger } from "@/lib/logger";
+import { isPlatformId } from "@/lib/platforms";
 import { awardXp } from "@/lib/xp-service";
 
 const BodySchema = z.object({
@@ -94,7 +95,9 @@ export async function POST(request: Request) {
     }),
   ]);
 
-  const platform = (profile?.targetPlatform ?? "fiverr") as "fiverr" | "upwork";
+  // The column is free text; fall back to fiverr if it holds an unknown value.
+  const storedPlatform = profile?.targetPlatform;
+  const platform = isPlatformId(storedPlatform) ? storedPlatform : "fiverr";
   const grounding = retrieveGrounding(message, platform, loadPlatformTracks());
 
   const context = [

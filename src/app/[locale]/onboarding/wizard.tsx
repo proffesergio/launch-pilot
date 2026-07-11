@@ -8,6 +8,13 @@ import { TapToListen } from "@/components/tap-to-listen";
 import { VoiceInputButton } from "@/components/voice-input-button";
 import { useRouter } from "@/i18n/navigation";
 import type { OnboardingAnswers } from "@/lib/onboarding";
+import {
+  JOB_BOARD_PLATFORMS,
+  MARKETPLACE_PLATFORMS,
+  PLATFORM_HINT_STORAGE_KEY,
+  PLATFORM_META,
+  isPlatformId,
+} from "@/lib/platforms";
 import { SKILLS } from "@/lib/skills";
 
 import { completeOnboarding } from "./actions";
@@ -53,12 +60,23 @@ function Choice({
   );
 }
 
-export function OnboardingWizard() {
+export function OnboardingWizard({
+  showJobBoards = true,
+}: {
+  showJobBoards?: boolean;
+}) {
   const t = useTranslations("onboarding");
   const reduced = useReducedMotion();
   const router = useRouter();
   const [stepIndex, setStepIndex] = useState(0);
-  const [draft, setDraft] = useState<Draft>({});
+  // A landing-page pick pre-fills the platform step (still changeable here).
+  // Guarded for SSR; the hint never renders on the first (skill) step, so
+  // server and client first paints stay identical.
+  const [draft, setDraft] = useState<Draft>(() => {
+    if (typeof window === "undefined") return {};
+    const hint = window.localStorage.getItem(PLATFORM_HINT_STORAGE_KEY);
+    return isPlatformId(hint) ? { targetPlatform: hint } : {};
+  });
   const [status, setStatus] = useState<"idle" | "saving" | "error">("idle");
 
   const step: Step = STEPS[stepIndex];
@@ -167,17 +185,49 @@ export function OnboardingWizard() {
       )}
 
       {step === "platform" && (
-        <div className="grid grid-cols-2 gap-3">
-          {(["fiverr", "upwork"] as const).map((p) => (
-            <Choice
-              key={p}
-              testId={`platform-${p}`}
-              selected={draft.targetPlatform === p}
-              onSelect={() => setDraft({ ...draft, targetPlatform: p })}
-              title={t(`platform.${p}`)}
-              hint={t(`platform.${p}Hint`)}
-            />
-          ))}
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-2.5">
+            <p className="text-sm font-medium text-stone-600">
+              {t("platform.marketplacesLabel")}
+              <span className="ml-2 font-normal text-stone-400">
+                {t("platform.marketplacesHint")}
+              </span>
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              {MARKETPLACE_PLATFORMS.map((p) => (
+                <Choice
+                  key={p}
+                  testId={`platform-${p}`}
+                  selected={draft.targetPlatform === p}
+                  onSelect={() => setDraft({ ...draft, targetPlatform: p })}
+                  title={PLATFORM_META[p].name}
+                  hint={t(`platform.${p}Hint`)}
+                />
+              ))}
+            </div>
+          </div>
+          {showJobBoards && (
+            <div className="flex flex-col gap-2.5">
+              <p className="text-sm font-medium text-stone-600">
+                {t("platform.jobBoardsLabel")}
+                <span className="ml-2 font-normal text-stone-400">
+                  {t("platform.jobBoardsHint")}
+                </span>
+              </p>
+              <div className="grid max-h-72 grid-cols-2 gap-3 overflow-y-auto pr-1">
+                {JOB_BOARD_PLATFORMS.map((p) => (
+                  <Choice
+                    key={p}
+                    testId={`platform-${p}`}
+                    selected={draft.targetPlatform === p}
+                    onSelect={() => setDraft({ ...draft, targetPlatform: p })}
+                    title={PLATFORM_META[p].name}
+                    hint={t(`platform.${p}Hint`)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 

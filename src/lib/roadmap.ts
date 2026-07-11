@@ -1,5 +1,6 @@
-import type { MissionTemplate, PlatformTrack } from "./content";
+import type { MissionTemplate, PlatformTrack, TrackId } from "./content";
 import { missionsVersion } from "./content";
+import { platformCategory, type PlatformId } from "./platforms";
 import { missionXp } from "./xp";
 
 /**
@@ -14,7 +15,7 @@ export const GENERATOR_VERSION = "roadmap-gen@0.1.0";
 
 export type RoadmapProfile = {
   skillTrack: string;
-  targetPlatform: "fiverr" | "upwork";
+  targetPlatform: PlatformId;
   weeklyHours: number;
   englishConfidence: "low" | "medium" | "high";
   experience: "none" | "some" | "experienced";
@@ -32,8 +33,12 @@ export type GeneratedRoadmap = {
 };
 
 function applies(m: MissionTemplate, profile: RoadmapProfile): boolean {
-  if (m.platforms !== "all" && !m.platforms.includes(profile.targetPlatform)) {
-    return false;
+  if (m.platforms !== "all") {
+    if (m.platforms === "marketplace" || m.platforms === "job_board") {
+      if (platformCategory(profile.targetPlatform) !== m.platforms) return false;
+    } else if (!m.platforms.includes(profile.targetPlatform)) {
+      return false;
+    }
   }
   if (
     m.onlyEnglishConfidence &&
@@ -50,7 +55,7 @@ function applies(m: MissionTemplate, profile: RoadmapProfile): boolean {
 export function generateRoadmap(
   profile: RoadmapProfile,
   templates: MissionTemplate[],
-  tracks: Record<"fiverr" | "upwork" | "bd_payouts", PlatformTrack>,
+  tracks: Record<TrackId, PlatformTrack>,
 ): GeneratedRoadmap {
   const missions = templates
     .filter((m) => applies(m, profile))

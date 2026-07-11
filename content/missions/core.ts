@@ -4,12 +4,13 @@
  * gated by one boss mission per platform. XP is computed from estMinutes and
  * category by src/lib/xp.ts, never authored by hand.
  *
- * Conditions: `platforms` scopes to a marketplace; `onlyEnglishConfidence`
- * includes a mission only for those users; `skipForExperience` drops it for
- * users past it.
+ * Conditions: `platforms` scopes to specific platforms, or to a whole
+ * category ("marketplace" = gig sites like Fiverr/Upwork, "job_board" =
+ * apply-with-CV boards like RemoteOK); `onlyEnglishConfidence` includes a
+ * mission only for those users; `skipForExperience` drops it for users past it.
  */
 
-export const MISSIONS_VERSION = "0.1.0";
+export const MISSIONS_VERSION = "0.2.0";
 
 export const missionTemplates = [
   // ── Phase 1 — Foundation ──────────────────────────────────────────────
@@ -265,6 +266,63 @@ export const missionTemplates = [
     },
   },
   {
+    key: "job_board_cv",
+    phase: 2,
+    quest: "go_live",
+    order: 12,
+    category: "profile",
+    type: "quest",
+    estMinutes: 60,
+    completionKind: "evidence",
+    platforms: "job_board",
+    title: {
+      bn: "এক পাতার সিভি",
+      en: "A one-page CV",
+    },
+    objective: {
+      bn: "অ্যাটলাসের সাথে এক পাতার পরিষ্কার সিভি বানান: আপনার সেরা কাজ উপরে, বাস্তব পোস্টিং থেকে নেওয়া কীওয়ার্ড, আর নমুনা কাজের লিংক।",
+      en: "Build a clean one-page CV with Atlas: your best task on top, keywords taken from real postings, and links to your sample works.",
+    },
+  },
+  {
+    key: "job_board_alerts",
+    phase: 2,
+    quest: "go_live",
+    order: 13,
+    category: "outreach",
+    type: "quest",
+    estMinutes: 25,
+    completionKind: "self_attest",
+    platforms: "job_board",
+    title: {
+      bn: "চাকরির অ্যালার্ট চালু করুন",
+      en: "Turn on job alerts",
+    },
+    objective: {
+      bn: "আপনার সাইটের ইমেইল ডাইজেস্ট/অ্যালার্ট চালু করুন আর সার্চ ফিল্টার সেট করুন — শুধু 'Worldwide/Anywhere' পদ, আপনার দক্ষতার ক্যাটাগরিতে।",
+      en: "Enable your site's email digest/alerts and set your search filters — 'Worldwide/Anywhere' roles only, in your skill's category.",
+    },
+  },
+  {
+    key: "boss_job_board_ready",
+    phase: 2,
+    quest: "go_live",
+    order: 19,
+    category: "profile",
+    type: "boss",
+    estMinutes: 45,
+    completionKind: "evidence",
+    platforms: "job_board",
+    title: {
+      bn: "বস মিশন: আবেদনের অস্ত্র প্রস্তুত",
+      en: "Boss: application kit ready",
+    },
+    objective: {
+      bn: "সিভি, প্রোফাইল আর ছোট কভার-নোট টেমপ্লেট — তিনটিই অ্যাটলাসের সাথে চূড়ান্ত করুন ও আপনার বেছে নেওয়া সাইটে প্রোফাইল খুলুন। পাশ করলে পরের ধাপ: আবেদন শুরু।",
+      en: "Finalize all three with Atlas — CV, profile, and a short cover-note template — and open your profile on your chosen site. Passing unlocks the next phase: applying.",
+    },
+  },
+  {
     key: "boss_profile_live",
     phase: 2,
     quest: "go_live",
@@ -273,7 +331,7 @@ export const missionTemplates = [
     type: "boss",
     estMinutes: 45,
     completionKind: "evidence",
-    platforms: "all",
+    platforms: "marketplace",
     title: {
       bn: "বস মিশন: প্রোফাইল লাইভ",
       en: "Boss: profile live",
@@ -343,6 +401,63 @@ export const missionTemplates = [
     },
   },
   {
+    key: "job_board_shortlist",
+    phase: 3,
+    quest: "first_orders",
+    order: 21,
+    category: "outreach",
+    type: "weekly",
+    estMinutes: 30,
+    completionKind: "self_attest",
+    platforms: "job_board",
+    title: {
+      bn: "যোগ্য পদের শর্টলিস্ট",
+      en: "Shortlist eligible roles",
+    },
+    objective: {
+      bn: "এই সপ্তাহের পোস্টগুলো থেকে ৫টি 'Worldwide' পদ বাছুন যা আপনার দক্ষতার সাথে সত্যিই মেলে — অযোগ্য বা আধা-মেলা পদ তালিকায় নয়।",
+      en: "From this week's postings, shortlist 5 'Worldwide' roles that genuinely match your skill — no ineligible or half-match roles on the list.",
+    },
+  },
+  {
+    key: "job_board_applications",
+    phase: 3,
+    quest: "first_orders",
+    order: 22,
+    category: "outreach",
+    type: "weekly",
+    estMinutes: 90,
+    completionKind: "self_attest",
+    platforms: "job_board",
+    title: {
+      bn: "পাঁচটি সাজানো আবেদন",
+      en: "Five tailored applications",
+    },
+    objective: {
+      bn: "শর্টলিস্টের পদগুলোতে অ্যাটলাসের সাথে সাজানো আবেদন পাঠান — প্রতিটির জন্য সিভির শিরোনাম ও কভার-নোট সেই পদের ভাষায় বদলে; কপি-পেস্ট নয়।",
+      en: "Apply to your shortlisted roles with Atlas — CV headline and cover note reworded for each posting's language; never copy-paste.",
+    },
+  },
+  {
+    key: "job_board_interview_prep",
+    phase: 3,
+    quest: "first_orders",
+    order: 24,
+    category: "skill",
+    type: "quest",
+    estMinutes: 45,
+    completionKind: "self_attest",
+    platforms: "job_board",
+    title: {
+      bn: "ইন্টারভিউয়ের মহড়া",
+      en: "Interview dry run",
+    },
+    objective: {
+      bn: "অ্যাটলাস নিয়োগদাতা সেজে লিখিত ইন্টারভিউ নেবে: পরিচয়, কাজের নমুনা, প্রত্যাশিত বেতন, টাইমজোন — উত্তরগুলো একসাথে ঘষেমেজে নিন।",
+      en: "Atlas plays the employer in a written mock interview: intro, work samples, expected pay, time zone — polish your answers together.",
+    },
+  },
+  {
     key: "client_reply_drill",
     phase: 3,
     quest: "first_orders",
@@ -371,7 +486,7 @@ export const missionTemplates = [
     type: "quest",
     estMinutes: 45,
     completionKind: "self_attest",
-    platforms: "all",
+    platforms: "marketplace",
     title: {
       bn: "ডেলিভারির মহড়া",
       en: "Delivery dry run",
@@ -390,7 +505,7 @@ export const missionTemplates = [
     type: "side",
     estMinutes: 15,
     completionKind: "self_attest",
-    platforms: "all",
+    platforms: "marketplace",
     title: {
       bn: "রিভিউ চাওয়ার ভদ্র উপায়",
       en: "The polite review ask",

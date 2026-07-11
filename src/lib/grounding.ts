@@ -1,4 +1,5 @@
-import type { PlatformTrack } from "./content";
+import type { PlatformTrack, TrackId } from "./content";
+import type { PlatformId } from "./platforms";
 
 /**
  * Grounding retrieval (architecture §6, mitigates R3): platform-specific
@@ -23,8 +24,8 @@ function tokenize(text: string): string[] {
 
 export function retrieveGrounding(
   query: string,
-  platform: "fiverr" | "upwork",
-  tracks: Record<"fiverr" | "upwork" | "bd_payouts", PlatformTrack>,
+  platform: PlatformId,
+  tracks: Record<TrackId, PlatformTrack>,
   limit = 4,
 ): GroundingHit[] {
   const queryTokens = new Set(tokenize(query));

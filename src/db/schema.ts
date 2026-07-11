@@ -26,7 +26,7 @@ export const freelancerProfiles = pgTable("freelancer_profiles", {
   skillTrack: text("skill_track").notNull(),
   skillConfidence: text("skill_confidence").notNull(), // high | low
   skillSource: text("skill_source").notNull(), // ai | fallback
-  targetPlatform: text("target_platform").notNull(), // fiverr | upwork
+  targetPlatform: text("target_platform").notNull(), // PlatformId (src/lib/platforms.ts)
   weeklyHours: integer("weekly_hours").notNull(),
   country: text("country").notNull().default("BD"),
   englishConfidence: text("english_confidence").notNull(), // low | medium | high

@@ -149,3 +149,26 @@ care once users hold live roadmaps.
 **Decision:** <what we chose>
 **Consequences:** + <gains>  − <costs/risks>
 ```
+
+## ADR-0012 — 17-platform expansion with marketplace/job-board categories
+**Date:** 2026-07-12 · **Status:** accepted
+**Context:** The owner wants the landing page to show that LaunchPilot coaches for many
+remote-work sites, not just Fiverr/Upwork, and wants users to pick a starting site and get
+guidance specific to it. Fifteen well-known remote job boards (Wellfound, RemoteOK, We Work
+Remotely, FlexJobs, Remotive, …) differ fundamentally from gig marketplaces: you apply to
+posted roles with a CV instead of publishing a service, many roles are region-locked, and
+the first-earning timeline is slower.
+**Decision:** A single platform registry (`src/lib/platforms.ts`) becomes the source of
+truth for 17 platforms, each with a `category` — `marketplace` or `job_board`. Every
+platform gets a curated, versioned, bilingual track in `content/platform-tracks/` (ADR-0011
+rules: sources cited, heuristics labeled; job-board tracks lean heuristic and stress
+worldwide-eligibility and scam guards). Mission templates may now scope to a whole category;
+job-board profiles get a CV/alerts/applications/interview path with their own phase-2 boss,
+while gig-shaped missions (gig draft, delivery dry run, review ask) are marketplace-scoped.
+The landing page gains a flag-gated (`m5_platforms`) explorer where a visitor picks a site;
+the pick survives sign-in via localStorage and pre-fills onboarding, which now offers all 17
+grouped by category. Advisory-only stands: links out, never integration.
+**Consequences:** + One registry drives landing, onboarding, roadmap, and coach grounding;
+honest per-site expectations are content, not marketing. − 15 new tracks to keep current
+(quarterly review needed); job-board copy is thinner than Fiverr/Upwork until real user
+questions harden it; onboarding platform step is longer (mitigated by grouping + flag).

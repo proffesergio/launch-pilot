@@ -154,10 +154,27 @@
     },
     "platform": {
       "question": "Where do you want to earn first?",
-      "fiverr": "Fiverr",
+      "marketplacesLabel": "Gig marketplaces",
+      "marketplacesHint": "sell services — usually the fastest first dollar",
+      "jobBoardsLabel": "Remote job boards",
+      "jobBoardsHint": "apply to posted roles with a CV",
       "fiverrHint": "You publish services (gigs); buyers come to you.",
-      "upwork": "Upwork",
-      "upworkHint": "You send proposals to posted jobs."
+      "upworkHint": "You send proposals to posted jobs.",
+      "wellfoundHint": "Startup jobs; salary shown upfront.",
+      "working_nomadsHint": "Curated remote list with an email digest.",
+      "web3_careerHint": "Blockchain and Web3 roles.",
+      "remoteokHint": "Huge open feed of remote jobs.",
+      "weworkremotelyHint": "Large, serious remote community.",
+      "jobspressoHint": "Curated tech, marketing, and support.",
+      "flexjobsHint": "Hand-screened listings; paid membership.",
+      "justremoteHint": "Remote roles by role and country.",
+      "jobgetherHint": "Matches jobs to your profile.",
+      "underdogHint": "One application, many startups.",
+      "builtinHint": "Tech jobs plus company research.",
+      "remote_coHint": "Jobs plus remote-work answers.",
+      "skipthedriveHint": "Simple remote-job aggregator.",
+      "remotiveHint": "Tech jobs with clear region tags.",
+      "virtualvocationsHint": "Hand-screened; strong in admin and VA."
     },
     "hours": {
       "question": "How many hours a week can you really give?",
@@ -256,9 +273,111 @@
     },
     "stats": {
       "missions": "guided missions",
-      "platforms": "marketplaces from day one",
+      "platforms": "sites with a guided track",
       "languages": "languages, plus tap-to-listen",
       "cost": "until your first real earning"
+    },
+    "platforms": {
+      "title": "17 launchpads. One honest coach.",
+      "sub": "Fiverr and Upwork are just the start — pick any of these remote-work sites and Atlas coaches you for that site specifically.",
+      "algoNote": "Every site plays by its own rules: its own algorithm, its own way of handing out the first order or interview, its own pace. What works on Fiverr flops on a job board. Pick where you want to start — your roadmap and coaching bend to that site, with the patience it demands built in.",
+      "marketplaces": "Gig marketplaces",
+      "marketplacesHint": "buyers come to you — fastest first dollar",
+      "jobBoards": "Remote job boards",
+      "jobBoardsHint": "you apply to posted roles with a CV",
+      "marketplaceBadge": "Gig marketplace",
+      "jobBoardBadge": "Remote job board",
+      "approachLabel": "How it works there",
+      "patienceLabel": "The honest part",
+      "startWith": "Start with {name}",
+      "visit": "See the site",
+      "items": {
+        "fiverr": {
+          "tagline": "You publish services (gigs) and buyers come to you — no CV, no interviews. The fastest realistic path to a first dollar.",
+          "approach": "Fiverr ranks gigs like a search engine ranks pages: title keywords, gallery quality, response speed, and early reviews decide who gets seen. New sellers get a visibility window — a complete, specific gig makes it count.",
+          "patience": "A first order typically takes 2–6 weeks of daily showing up, and Fiverr keeps 20% of everything. Nobody honest promises faster."
+        },
+        "upwork": {
+          "tagline": "You send proposals to posted jobs — more effort per client, but bigger and longer projects than gig sites.",
+          "approach": "A specialized profile and a first line that answers the client's actual problem win here. Proposal credits (Connects) are limited — spend them on fresh posts with few applicants, and let small early jobs build your Job Success Score.",
+          "patience": "Expect dozens of tailored proposals before the first win; 4–8 weeks is normal. Copy-paste proposals get you suspended, not hired."
+        },
+        "wellfound": {
+          "tagline": "Over 130k startup jobs, from young companies to fast-growing ones — with salary and equity shown before you apply.",
+          "approach": "One profile powers every application, and you often talk directly to founders. Your headline and projects do the selling; a short, specific note beats any formal cover letter.",
+          "patience": "Startup roles lean toward experience and replies take weeks. Best after you have a project or two to show — even spec work counts."
+        },
+        "working_nomads": {
+          "tagline": "A curated list of remote jobs for people who work from anywhere, sorted into clear categories.",
+          "approach": "It is an aggregator: you apply on each company's own site. Turn on the email digest, filter to worldwide-eligible roles, and apply while postings are fresh.",
+          "patience": "Expect a few good matches a week, not a flood. Fifteen focused minutes a day beats a Sunday binge."
+        },
+        "web3_career": {
+          "tagline": "The niche board for blockchain and Web3 companies — developers, but also marketing, design, and community roles.",
+          "approach": "Niche means less competition: learn the Web3 vocabulary and show it. Community moderation is a real entry door. Many posts show salary ranges — use them to set expectations.",
+          "patience": "Scams ride alongside real jobs here: anyone asking you to pay, connect a wallet, or buy tokens is not an employer. Walk away."
+        },
+        "remoteok": {
+          "tagline": "One of the biggest open feeds of remote jobs — developer, designer, copywriter, support, and more. No account needed to browse.",
+          "approach": "Newest posts sit on top and the whole world is applying. Check the location tag first — Worldwide only — then apply fast on the company's own form with a tidy CV and short note.",
+          "patience": "Global competition is fierce. Five tailored applications beat fifty copy-pasted ones, every single week."
+        },
+        "weworkremotely": {
+          "tagline": "One of the largest remote-work communities in the world, with categories from programming to customer support.",
+          "approach": "Employers pay to post, so listings are serious — and crowded. Follow each post's application instructions to the letter; many hide small attention tests. Customer support is the most realistic beginner door.",
+          "patience": "Popular posts draw hundreds of applicants. Expect weeks of silence — keep applying while you wait."
+        },
+        "jobspresso": {
+          "tagline": "Expertly curated remote jobs in tech, marketing, and customer support — every post reviewed by a human.",
+          "approach": "Apply to listings, but also upload your resume so employers can find you. Fewer posts, better quality — checking twice a week is the right rhythm.",
+          "patience": "A quiet board rewards patience. Treat it as one steady stop in your weekly rotation, not a daily jackpot."
+        },
+        "flexjobs": {
+          "tagline": "Hand-screened remote, hybrid, and flexible jobs — every listing verified, no scams.",
+          "approach": "Full access needs a paid membership. In return you get part-time and flexible roles most boards skip — admin, virtual assistance, data entry, support — the categories beginners actually win.",
+          "patience": "Do the math in taka before subscribing, and join only when you can apply several hours a week. Use it seriously for a month or two, or not at all."
+        },
+        "justremote": {
+          "tagline": "Fully and partially remote jobs across development, marketing, design, and HR — filterable by country.",
+          "approach": "Set the Anywhere filter first so you never waste time on roles you cannot get. The paid PowerSearch reveals unadvertised roles — optional, and only worth it later.",
+          "patience": "A smaller, tidy board. One stop on your weekly checklist, not your only source."
+        },
+        "jobgether": {
+          "tagline": "Over 100k remote jobs matched to your profile, each scored for how well it fits you.",
+          "approach": "The profile is the engine: complete skills, languages, time zone, and expectations, then chase only high-match roles. Postings spell out the work setup — check it fits Bangladesh time.",
+          "patience": "Mass-applying to low-match roles goes nowhere. Let the match score focus your effort and show you which skill to build next."
+        },
+        "underdog": {
+          "tagline": "One application puts you in front of many vetted startups hiring in NYC, SF, and remote.",
+          "approach": "The flow is reversed: fill one careful form and interested companies contact you. Every field — especially projects and links — is your whole pitch.",
+          "patience": "The US startup bar is high; this is a hard door for absolute beginners. Bank a real project first, then come back."
+        },
+        "builtin": {
+          "tagline": "Tech jobs, company profiles, salaries, and news — a research library that happens to list jobs.",
+          "approach": "Use it twice: find the role, then read the company profile and culture pages so your cover letter names specifics no template can.",
+          "patience": "Roles skew senior and many remote posts are US-only. Read the eligibility line before you invest a minute."
+        },
+        "remote_co": {
+          "tagline": "Remote jobs alongside straight answers from real remote companies about how they hire and work.",
+          "approach": "Read the Q&A resources before interviews — knowing async-communication norms is what sets a beginner apart. Support, VA, and data entry are the starter categories.",
+          "patience": "It is part of the FlexJobs family, so some paths lead to a subscription. Work the free portions first."
+        },
+        "skipthedrive": {
+          "tagline": "Thousands of remote and hybrid jobs gathered in one simple, no-account-needed place.",
+          "approach": "A quick-scan board: skim every day or two, shortlist matches, then apply on the employer's own site.",
+          "patience": "Listings lean US and eligibility varies — confirm each post. A supporting source, not the main bet."
+        },
+        "remotive": {
+          "tagline": "Tech-focused remote jobs with a newsletter, a community — and region tags on every post.",
+          "approach": "Start every search from the Worldwide tag so ineligible roles never cost you a minute. Support and QA are the writing-heavy, non-coding doors in.",
+          "patience": "Even with perfect targeting, replies take weeks. The newsletter keeps fresh posts coming to you — apply early."
+        },
+        "virtualvocations": {
+          "tagline": "A job service of hand-screened remote leads — every listing checked before it goes up.",
+          "approach": "Some listings are free to view; the full database needs a subscription. Strongest in admin, virtual assistant, data entry, and support work.",
+          "patience": "Many roles require US residency — hunt specifically for internationally open ones and confirm before applying."
+        }
+      }
     },
     "tutorialTitle": "Three screens. That's the whole loop.",
     "tutorialSub": "No tour needed — watch it happen.",

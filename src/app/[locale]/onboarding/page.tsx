@@ -19,7 +19,7 @@ export default async function OnboardingPage({
 
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center gap-6 px-6 py-12">
-      <OnboardingWizard />
+      <OnboardingWizard showJobBoards={getFlag("m5_platforms")} />
     </main>
   );
 }

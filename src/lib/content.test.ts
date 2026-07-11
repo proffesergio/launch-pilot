@@ -6,12 +6,23 @@ import {
   loadPlatformTracks,
   loadMissionTemplates,
 } from "./content";
+import { PLATFORMS, PLATFORM_META, platformCategory } from "./platforms";
 
 describe("platform tracks v0", () => {
   const tracks = loadPlatformTracks();
 
-  it("ships fiverr, upwork, and the BD payout module", () => {
-    expect(Object.keys(tracks).sort()).toEqual(["bd_payouts", "fiverr", "upwork"]);
+  it("ships a track for all 17 platforms plus the BD payout module", () => {
+    expect(Object.keys(tracks).sort()).toEqual(
+      [...PLATFORMS, "bd_payouts"].sort(),
+    );
+  });
+
+  it("every registry entry has a matching track and a category", () => {
+    for (const id of PLATFORMS) {
+      expect(tracks[id].id, `track for ${id}`).toBe(id);
+      expect(["marketplace", "job_board"]).toContain(PLATFORM_META[id].category);
+      expect(PLATFORM_META[id].url).toMatch(/^https:\/\//);
+    }
   });
 
   it("every track validates against the schema and carries a semver version", () => {
@@ -63,13 +74,15 @@ describe("mission templates v0", () => {
   });
 
   it("each of the three phases ends in exactly one boss mission per platform", () => {
-    for (const platform of ["fiverr", "upwork"] as const) {
+    for (const platform of PLATFORMS) {
       for (const phase of [1, 2, 3] as const) {
         const bosses = missions.filter(
           (m) =>
             m.type === "boss" &&
             m.phase === phase &&
-            (m.platforms === "all" || m.platforms.includes(platform)),
+            (m.platforms === "all" ||
+              m.platforms === platformCategory(platform) ||
+              (Array.isArray(m.platforms) && m.platforms.includes(platform))),
         );
         expect(
           bosses.length,

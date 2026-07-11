@@ -22,6 +22,14 @@ const seasonedDev = {
   experience: "experienced",
 } as const;
 
+const jobBoardStarter = {
+  skillTrack: "dev",
+  targetPlatform: "remoteok",
+  weeklyHours: 15,
+  englishConfidence: "medium",
+  experience: "some",
+} as const;
+
 describe("generateRoadmap", () => {
   it("two different profiles yield demonstrably different roadmaps (M2 exit criterion)", () => {
     const a = generateRoadmap(beginnerDesigner, templates, tracks);
@@ -34,6 +42,28 @@ describe("generateRoadmap", () => {
     expect(keysA.some((k) => k.startsWith("upwork_"))).toBe(false);
     expect(keysB.some((k) => k.startsWith("upwork_"))).toBe(true);
     expect(keysB.some((k) => k.startsWith("fiverr_"))).toBe(false);
+  });
+
+  it("job-board profiles get application missions, never gig/marketplace work", () => {
+    const { missions, trackVersionPins } = generateRoadmap(
+      jobBoardStarter,
+      templates,
+      tracks,
+    );
+    const keys = missions.map((m) => m.key);
+    expect(keys.some((k) => k.startsWith("job_board_"))).toBe(true);
+    expect(keys.some((k) => k.startsWith("fiverr_"))).toBe(false);
+    expect(keys.some((k) => k.startsWith("upwork_"))).toBe(false);
+    // Marketplace-scoped templates must not leak onto job boards.
+    for (const m of missions) {
+      expect(m.platforms).not.toBe("marketplace");
+    }
+    expect(trackVersionPins.remoteok).toBe(tracks.remoteok.version);
+  });
+
+  it("marketplace profiles never see job-board application missions", () => {
+    const { missions } = generateRoadmap(beginnerDesigner, templates, tracks);
+    expect(missions.some((m) => m.key.startsWith("job_board_"))).toBe(false);
   });
 
   it("scaffolds English only for low-confidence users", () => {

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { PLATFORMS } from "./platforms";
+
 /**
  * The five onboarding answers (M1). Everything the roadmap generator and
  * coach personalize on. `rawSkill` stays free-text — the user's own words are
@@ -8,7 +10,7 @@ import { z } from "zod";
  */
 export const OnboardingAnswersSchema = z.object({
   rawSkill: z.string().trim().min(1).max(300),
-  targetPlatform: z.enum(["fiverr", "upwork"]),
+  targetPlatform: z.enum(PLATFORMS),
   weeklyHours: z.coerce.number().int().min(1).max(80),
   englishConfidence: z.enum(["low", "medium", "high"]),
   experience: z.enum(["none", "some", "experienced"]),
