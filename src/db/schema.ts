@@ -69,8 +69,9 @@ export const roadmapMissions = pgTable("roadmap_missions", {
   phase: integer("phase").notNull(),
   quest: text("quest").notNull(),
   position: integer("position").notNull(),
-  status: text("status").notNull().default("locked"), // unlocked | locked
+  status: text("status").notNull().default("locked"), // locked | unlocked | done
   unlockedAt: timestamp("unlocked_at", { withTimezone: true }),
+  completedAt: timestamp("completed_at", { withTimezone: true }),
 });
 
 export type RoadmapMissionRow = typeof roadmapMissions.$inferSelect;

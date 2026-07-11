@@ -2,6 +2,10 @@
   "common": {
     "appName": "LaunchPilot",
     "listen": "Tap to listen",
+    "voice": {
+      "start": "Speak instead of typing",
+      "stop": "Listening… tap to stop"
+    },
     "tagline": "Your coach to a freelance career — from any skill to your first paid order.",
     "localeSwitcher": {
       "label": "Language",
@@ -196,7 +200,17 @@
     "subtitle": "Phase by phase, mission by mission — boss missions unlock the next phase.",
     "phase": "Phase {number}",
     "effort": "~{minutes} min · {xp} XP",
-    "locked": "Locked"
+    "locked": "Locked",
+    "progress": "{done} of {total} missions done",
+    "bossLabel": "Boss mission",
+    "checklist": "Checklist",
+    "checklistHint": "Tick it when it's truly done — honesty is the whole game.",
+    "markDone": "Mark as done",
+    "saving": "Saving…",
+    "doneLabel": "Done",
+    "xpToast": "+{xp} XP",
+    "phaseUnlocked": "New stage unlocked — check your profile!",
+    "completeError": "Couldn't save that. Try again."
   },
   "landing": {
     "badge": "Free — pay only after you earn",
@@ -299,6 +313,21 @@
     },
     "finalTitle": "Your first client is 90 days of small steps away",
     "finalBody": "Free to start, free until you earn. Then pay what you think it was worth.",
+    "footerNav": {
+      "product": "Product",
+      "how": "How it works",
+      "features": "Features",
+      "honest": "The honest promise",
+      "tracks": "Platform tracks",
+      "fiverr": "Fiverr track",
+      "upwork": "Upwork track",
+      "payouts": "bKash payouts",
+      "more": "More",
+      "github": "Open source on GitHub",
+      "language": "Language",
+      "advisory": "Advisory only — LaunchPilot never touches your marketplace accounts.",
+      "copyright": "© {year} LaunchPilot"
+    },
     "honestTitle": "The honest part",
     "honestBody": "We don't promise you'll be rich in 60 days — nobody honest can. We promise a real path: show up ~30 minutes a day, complete the missions, and you'll know exactly what to do next, including the unglamorous parts like fees, taxes on payouts, and how money actually reaches bKash. LaunchPilot never touches your marketplace account. It's free, and after your first real earning, you pay what you think it was worth.",
     "footer": "Made for Bangladesh"

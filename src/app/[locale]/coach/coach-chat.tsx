@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { TapToListen } from "@/components/tap-to-listen";
+import { VoiceInputButton } from "@/components/voice-input-button";
 
 type Turn = { role: "user" | "assistant"; text: string };
 
@@ -102,6 +103,12 @@ export function CoachChat() {
         ))}
       </div>
       <form onSubmit={send} className="flex gap-2">
+        <VoiceInputButton
+          testId="coach-voice"
+          onTranscript={(text) =>
+            setInput((prev) => (prev ? `${prev} ${text}` : text))
+          }
+        />
         <input
           data-testid="coach-input"
           value={input}

@@ -1,0 +1,1 @@
+ALTER TABLE "roadmap_missions" ADD COLUMN "completed_at" timestamp with time zone;

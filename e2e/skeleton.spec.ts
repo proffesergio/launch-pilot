@@ -16,7 +16,11 @@ test.describe("Bangla-preferring browser", () => {
       "আপনার প্রথম ফ্রিল্যান্স আয়",
     );
 
-    await page.getByRole("link", { name: "English" }).click();
+    // The locale switcher renders in both header and footer; use the header's.
+    await page
+      .locator("header")
+      .getByRole("link", { name: "English" })
+      .click();
     await expect(page).toHaveURL(/\/en$/);
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
       "your first freelance income",

@@ -31,6 +31,13 @@ const EnvSchema = z.object({
   // Cost guardrail — string env coerced to a number.
   AI_DAILY_USD_CAP_PER_USER: z.coerce.number().positive().default(0.5),
 
+  // SMS delivery (Slice C) — optional; absent = dev mailbox in dev, loud
+  // log-only in production. "twilio" additionally needs the TWILIO_* trio.
+  SMS_PROVIDER: z.enum(["dev", "none", "twilio"]).optional(),
+  TWILIO_ACCOUNT_SID: z.string().optional(),
+  TWILIO_AUTH_TOKEN: z.string().optional(),
+  TWILIO_FROM_NUMBER: z.string().optional(),
+
   // Observability / integrations — optional; absent = that feature is off.
   NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
   NEXT_PUBLIC_POSTHOG_HOST: z.string().url().default("https://us.i.posthog.com"),

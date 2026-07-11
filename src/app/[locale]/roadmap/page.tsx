@@ -5,13 +5,13 @@ import { getTranslations } from "next-intl/server";
 
 import { getDb } from "@/db";
 import { roadmapMissions, userRoadmaps } from "@/db/schema";
-import { redirect } from "@/i18n/navigation";
+import { Link, redirect } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
-import { TapToListen } from "@/components/tap-to-listen";
 import { getAuth } from "@/lib/auth";
 import { loadMissionTemplates } from "@/lib/content";
 import { getFlag } from "@/lib/flags";
 import { missionXp } from "@/lib/xp";
+import { RoadmapView, type MissionVM, type PhaseVM } from "./roadmap-view";
 
 const PHASE_NAMES: Record<number, { bn: string; en: string }> = {
   1: { bn: "ভিত্তি", en: "Foundation" },
@@ -31,6 +31,7 @@ export default async function RoadmapPage({
   }
 
   const t = await getTranslations("roadmap");
+  const tDash = await getTranslations("dashboard");
   const db = getDb();
   const roadmap = await db.query.userRoadmaps.findFirst({
     where: eq(userRoadmaps.userId, session!.user.id),
@@ -47,67 +48,50 @@ export default async function RoadmapPage({
   const templates = new Map(loadMissionTemplates().map((m) => [m.key, m]));
   const lang = locale as AppLocale;
 
-  const phases = [1, 2, 3].map((phase) => ({
+  const phases: PhaseVM[] = [1, 2, 3].map((phase) => ({
     phase,
-    rows: rows.filter((r) => r.phase === phase),
+    name: PHASE_NAMES[phase][lang],
+    missions: rows
+      .filter((r) => r.phase === phase)
+      .flatMap((r): MissionVM[] => {
+        const template = templates.get(r.missionKey);
+        if (!template) return [];
+        return [
+          {
+            id: r.id,
+            key: r.missionKey,
+            title: template.title[lang],
+            objective: template.objective[lang],
+            minutes: template.estMinutes,
+            xp: missionXp(template.estMinutes, template.category),
+            status: r.status as MissionVM["status"],
+            boss: template.type === "boss",
+          },
+        ];
+      }),
   }));
 
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-8 px-6 py-12">
-      <div>
-        <span className="inline-block h-1.5 w-16 rounded-full bg-[#F5A524]" />
-        <h1 className="mt-4 text-3xl font-semibold tracking-tight text-stone-900">
-          {t("title")}
-        </h1>
-        <p className="mt-2 text-stone-600">{t("subtitle")}</p>
-      </div>
+    <main className="dawn-sky grain relative flex min-h-dvh flex-1 flex-col">
+      <div className="tech-grid pointer-events-none absolute inset-0" aria-hidden />
 
-      {phases.map(({ phase, rows: phaseRows }) => (
-        <section key={phase} className="flex flex-col gap-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-stone-500">
-            {t("phase", { number: phase })} — {PHASE_NAMES[phase][lang]}
-          </h2>
-          <ol className="flex flex-col gap-3">
-            {phaseRows.map((row) => {
-              const template = templates.get(row.missionKey);
-              if (!template) return null;
-              const locked = row.status === "locked";
-              return (
-                <li
-                  key={row.id}
-                  data-testid={`mission-${row.missionKey}`}
-                  data-status={row.status}
-                  className={`rounded-xl border p-4 ${
-                    locked
-                      ? "border-stone-200 bg-stone-50 opacity-70"
-                      : "border-[#F5A524] bg-amber-50"
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex flex-col gap-1">
-                      <span className="flex items-center gap-2 font-medium text-stone-900">
-                        {template.type === "boss" && <span aria-hidden>⚔️</span>}
-                        {template.title[lang]}
-                      </span>
-                      <span className="text-sm leading-6 text-stone-600">
-                        {template.objective[lang]}
-                      </span>
-                      <span className="mt-1 text-xs text-stone-500">
-                        {t("effort", {
-                          minutes: template.estMinutes,
-                          xp: missionXp(template.estMinutes, template.category),
-                        })}
-                        {locked && ` · ${t("locked")}`}
-                      </span>
-                    </div>
-                    {!locked && <TapToListen text={template.objective[lang]} />}
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        </section>
-      ))}
+      <div className="relative mx-auto flex w-full max-w-2xl flex-1 flex-col gap-8 px-6 py-12">
+        <div>
+          <Link
+            href="/dashboard"
+            className="text-sm text-stone-400 transition-colors hover:text-marigold"
+          >
+            ← {tDash("title")}
+          </Link>
+          <span className="mt-4 block h-1.5 w-16 rounded-full bg-marigold" />
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-stone-50">
+            {t("title")}
+          </h1>
+          <p className="mt-2 text-stone-400">{t("subtitle")}</p>
+        </div>
+
+        <RoadmapView phases={phases} />
+      </div>
     </main>
   );
 }

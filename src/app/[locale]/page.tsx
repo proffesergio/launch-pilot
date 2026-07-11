@@ -2,7 +2,6 @@ import { useTranslations } from "next-intl";
 
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { RevealInView } from "@/components/reveal-in-view";
-import { TapToListen } from "@/components/tap-to-listen";
 import { Link } from "@/i18n/navigation";
 import { loadMissionTemplates } from "@/lib/content";
 import { SKILLS } from "@/lib/skills";
@@ -149,9 +148,6 @@ export default function Home() {
           >
             {t("landing.sub")}
           </p>
-          <div className="rise" style={{ animationDelay: "0.4s" }}>
-            <TapToListen text={`${t("landing.headline")} ${t("landing.headlineAccent")}. ${t("landing.sub")}`} />
-          </div>
           <div
             className="rise flex flex-col items-center gap-3 sm:flex-row"
             style={{ animationDelay: "0.5s" }}
@@ -201,7 +197,7 @@ export default function Home() {
       </section>
 
       {/* ── Animated walkthrough: sign in → onboard → Atlas ───────── */}
-      <section className="mx-auto w-full max-w-5xl px-6 py-20">
+      <section id="how" className="mx-auto w-full max-w-5xl px-6 py-20">
         <RevealInView>
           <h2 className="text-balance text-3xl font-bold tracking-tight text-stone-50">
             {t("landing.tutorialTitle")}
@@ -222,7 +218,7 @@ export default function Home() {
       </section>
 
       {/* ── Features ──────────────────────────────────────────────── */}
-      <section className="tech-grid border-t border-white/10">
+      <section id="features" className="tech-grid border-t border-white/10">
         <div className="mx-auto w-full max-w-5xl px-6 py-20">
           <RevealInView>
             <h2 className="max-w-2xl text-balance text-3xl font-bold tracking-tight text-stone-50">
@@ -250,7 +246,7 @@ export default function Home() {
       </section>
 
       {/* ── The honest promise ────────────────────────────────────── */}
-      <section className="border-t border-white/10">
+      <section id="honest" className="border-t border-white/10">
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-6 py-16">
           <RevealInView>
             <span className="inline-block h-1.5 w-16 rounded-full bg-marigold" />
@@ -260,9 +256,6 @@ export default function Home() {
             <p className="mt-3 text-pretty leading-8 text-stone-300">
               {t("landing.honestBody")}
             </p>
-            <div className="mt-3">
-              <TapToListen text={t("landing.honestBody")} />
-            </div>
           </RevealInView>
         </div>
       </section>
@@ -287,10 +280,72 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-white/10">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-8 text-sm text-stone-500">
-          <span>{t("common.appName")}</span>
-          <span>{t("landing.footer")}</span>
+      <footer className="border-t border-white/10 bg-white/[0.02]">
+        <div className="mx-auto grid w-full max-w-5xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="flex flex-col gap-3">
+            <span className="text-lg font-bold tracking-tight text-stone-50">
+              {t("common.appName")}
+            </span>
+            <p className="max-w-xs text-sm leading-6 text-stone-400">
+              {t("common.tagline")}
+            </p>
+            <div className="mt-2">
+              <LocaleSwitcher />
+            </div>
+          </div>
+
+          <nav aria-label={t("landing.footerNav.product")} className="flex flex-col gap-2.5 text-sm">
+            <span className="font-semibold uppercase tracking-wide text-stone-500">
+              {t("landing.footerNav.product")}
+            </span>
+            <a href="#how" className="w-fit text-stone-300 transition-colors hover:text-marigold">
+              {t("landing.footerNav.how")}
+            </a>
+            <a href="#features" className="w-fit text-stone-300 transition-colors hover:text-marigold">
+              {t("landing.footerNav.features")}
+            </a>
+            <a href="#honest" className="w-fit text-stone-300 transition-colors hover:text-marigold">
+              {t("landing.footerNav.honest")}
+            </a>
+            <Link href="/sign-in" className="w-fit text-stone-300 transition-colors hover:text-marigold">
+              {t("landing.signIn")}
+            </Link>
+          </nav>
+
+          <div className="flex flex-col gap-2.5 text-sm">
+            <span className="font-semibold uppercase tracking-wide text-stone-500">
+              {t("landing.footerNav.tracks")}
+            </span>
+            <span className="text-stone-300">{t("landing.footerNav.fiverr")}</span>
+            <span className="text-stone-300">{t("landing.footerNav.upwork")}</span>
+            <span className="text-stone-300">{t("landing.footerNav.payouts")}</span>
+          </div>
+
+          <div className="flex flex-col gap-2.5 text-sm">
+            <span className="font-semibold uppercase tracking-wide text-stone-500">
+              {t("landing.footerNav.more")}
+            </span>
+            <a
+              href="https://github.com/proffesergio/launch-pilot"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-fit text-stone-300 transition-colors hover:text-marigold"
+            >
+              {t("landing.footerNav.github")}
+            </a>
+            <span className="text-stone-300">{t("landing.footer")}</span>
+          </div>
+        </div>
+
+        <div className="border-t border-white/5">
+          <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-6 py-6 text-xs text-stone-500 sm:flex-row sm:items-center sm:justify-between">
+            <span>
+              {t("landing.footerNav.copyright", {
+                year: new Date().getFullYear(),
+              })}
+            </span>
+            <span className="max-w-md">{t("landing.footerNav.advisory")}</span>
+          </div>
         </div>
       </footer>
     </div>

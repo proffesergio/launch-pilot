@@ -4,9 +4,10 @@ import { nextCookies } from "better-auth/next-js";
 import { magicLink, phoneNumber } from "better-auth/plugins";
 
 import { getDb } from "@/db";
-import { recordMagicLink, recordOtp } from "./dev-mailbox";
+import { recordMagicLink } from "./dev-mailbox";
 import { getEnv, type Env } from "./env";
 import { logger } from "./logger";
+import { getSmsProvider } from "./sms";
 
 type Db = ReturnType<typeof getDb>;
 
@@ -43,18 +44,9 @@ export function createAuth(env: Env, db: Db) {
       // an SMS provider account exists (owner action); the flow is real.
       phoneNumber({
         sendOTP: async ({ phoneNumber: phone, code }) => {
-          recordOtp(phone, code);
-          if (process.env.NODE_ENV === "production") {
-            logger.error(
-              { event: "auth.otp.undeliverable", phone },
-              "OTP requested but no SMS provider is configured",
-            );
-            return;
-          }
-          logger.info(
-            { event: "auth.otp.dev_mailbox", phone },
-            "OTP captured in dev mailbox (/api/dev/otp)",
-          );
+          // Delivery is a pluggable provider (sms.ts): dev mailbox locally,
+          // loud log-only in production until a vendor account exists.
+          await getSmsProvider(env).sendOtp(phone, code);
         },
         signUpOnVerification: {
           // Phone users may have no email; better-auth requires one on the

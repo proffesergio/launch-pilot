@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { useTranslations } from "next-intl";
 
 import { TapToListen } from "@/components/tap-to-listen";
+import { VoiceInputButton } from "@/components/voice-input-button";
 import { useRouter } from "@/i18n/navigation";
 import type { OnboardingAnswers } from "@/lib/onboarding";
 import { SKILLS } from "@/lib/skills";
@@ -121,8 +122,19 @@ export function OnboardingWizard() {
             maxLength={300}
             className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-900 outline-none focus:border-[#F5A524]"
           />
-          <div className="flex flex-col gap-2.5">
+          <div className="flex items-center gap-2.5">
+            <VoiceInputButton
+              testId="skill-voice"
+              onTranscript={(text) =>
+                setDraft((d) => ({
+                  ...d,
+                  rawSkill: d.rawSkill ? `${d.rawSkill} ${text}` : text,
+                }))
+              }
+            />
             <p className="text-sm text-stone-500">{t("skill.suggestionsLabel")}</p>
+          </div>
+          <div className="flex flex-col gap-2.5">
             <div className="flex flex-wrap gap-2">
               {SUGGESTED_SKILLS.map((skillId, i) => {
                 const phrase = t(`skill.suggestions.${skillId}`);
