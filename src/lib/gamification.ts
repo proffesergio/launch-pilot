@@ -14,6 +14,7 @@ export const XpEventKindSchema = z.enum([
   "mission_completed",
   "coach_session",
   "daily_checkin",
+  "asset_published",
 ]);
 
 export type XpEventKind = z.infer<typeof XpEventKindSchema>;
@@ -24,6 +25,8 @@ export const XP_AWARDS: Record<Exclude<XpEventKind, "mission_completed">, number
   roadmap_generated: 30,
   coach_session: 10,
   daily_checkin: 5,
+  // Publishing a real Fiverr gig / Upwork profile is a milestone accomplishment.
+  asset_published: 40,
 };
 
 export type LevelInfo = {

@@ -49,6 +49,7 @@
     "startOnboarding": "Start: tell us about your skill",
     "viewRoadmap": "View your roadmap",
     "openCoach": "Talk to Atlas",
+    "openStudio": "Open Launch Studio",
     "level": "Level {level}",
     "levelLabel": "Level",
     "levelProgress": "{into} / {needed} XP",
@@ -66,6 +67,8 @@
       "focusMinutes": "~{minutes} min · {xp} XP",
       "coach": "Atlas, your coach",
       "coachBody": "Ask anything about your path — Bangla or English.",
+      "studio": "Launch Studio",
+      "studioBody": "Draft your Fiverr gig and Upwork profile, then publish them yourself — with tips and tools for any platform you want to try.",
       "activity": "Recent activity",
       "activityEmpty": "Your story starts here — every step you take earns XP.",
       "onboarding": "Tell us about your skill",
@@ -76,7 +79,8 @@
       "roadmap_generated": "Roadmap generated",
       "mission_completed": "Mission completed",
       "coach_session": "Coached with Atlas",
-      "daily_checkin": "Daily check-in"
+      "daily_checkin": "Daily check-in",
+      "asset_published": "Published a marketplace asset"
     },
     "profile": {
       "skill": "Skill",
@@ -450,6 +454,71 @@
     "honestTitle": "The honest part",
     "honestBody": "We don't promise you'll be rich in 60 days — nobody honest can. We promise a real path: show up ~30 minutes a day, complete the missions, and you'll know exactly what to do next, including the unglamorous parts like fees, taxes on payouts, and how money actually reaches bKash. LaunchPilot never touches your marketplace account. It's free, and after your first real earning, you pay what you think it was worth.",
     "footer": "Made for Bangladesh"
+  },
+  "studio": {
+    "title": "Launch Studio",
+    "subtitle": "Turn your profile into a real, publishable gig or profile — you copy and publish, we never touch your account.",
+    "tabs": { "assets": "Your assets", "playbook": "Platform playbook" },
+    "noProfile": "Finish onboarding first — the Studio drafts from your skill and level.",
+    "kind": { "fiverr_gig": "Fiverr gig", "upwork_profile": "Upwork profile" },
+    "englishNote": "Marketplace copy is written in English — listings in other languages get rejected.",
+    "generateHint": "Atlas drafts a first version from your profile. You edit every word before publishing.",
+    "generate": "Draft with Atlas",
+    "generating": "Drafting…",
+    "regenerate": "Redraft",
+    "save": "Save draft",
+    "saving": "Saving…",
+    "saved": "Draft saved.",
+    "review": "Readiness review",
+    "reviewing": "Reviewing…",
+    "published": "Published",
+    "degraded": "You've used today's free AI time. Your draft is safe — come back tomorrow to generate more.",
+    "error": "Something broke on our side. Try again in a moment.",
+    "fields": {
+      "title": "Gig title",
+      "name": "Package",
+      "price": "Price (USD)",
+      "packageDesc": "What's included",
+      "description": "Description",
+      "faq": "FAQ",
+      "question": "Question",
+      "answer": "Answer",
+      "gallery": "Gallery shot list",
+      "headline": "Headline",
+      "overview": "Overview",
+      "briefs": "Portfolio briefs",
+      "briefTitle": "Title",
+      "brief": "What it shows"
+    },
+    "review": {
+      "title": "Atlas's honest read",
+      "pass": "Looks good",
+      "warn": "Fix this",
+      "cant_verify": "Only you can check"
+    },
+    "publish": {
+      "open": "Publish it yourself",
+      "title": "Publish it yourself — step by step",
+      "intro": "Open your marketplace account, then copy each block into the matching field. When it's live, mark it published to earn XP. Then tick the matching boss mission in your roadmap.",
+      "copy": "Copy",
+      "copied": "Copied",
+      "markPublished": "I published it",
+      "publishedToast": "Published — nice work. +40 XP. Now tick the boss mission in your roadmap."
+    },
+    "playbook": {
+      "marketplaces": "Gig marketplaces",
+      "jobBoards": "Remote job boards",
+      "visit": "Visit site",
+      "jobBoardNote": "This is a job board — there's no gig to draft here. Apply to posted roles with your CV. The tips and tools below are for this site.",
+      "tips": "Tips for this platform",
+      "tools": "Recommended tools",
+      "rule": "rule",
+      "heuristic": "tip",
+      "free": "Free",
+      "freemium": "Freemium",
+      "paid": "Paid",
+      "askAtlas": "Ask Atlas about this platform"
+    }
   },
   "home": {
     "title": "Welcome to LaunchPilot",

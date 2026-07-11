@@ -17,6 +17,7 @@ describe("XP_AWARDS", () => {
       roadmap_generated: 30,
       coach_session: 10,
       daily_checkin: 5,
+      asset_published: 40,
     });
   });
 

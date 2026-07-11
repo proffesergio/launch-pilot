@@ -220,6 +220,24 @@ export default async function DashboardPage({
               </Reveal>
             )}
 
+            {getFlag("m35_launch_studio") && profile && (
+              <Reveal className={card} delay={0.28}>
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-stone-400">
+                  {t("cards.studio")}
+                </h2>
+                <p className="mt-3 text-sm leading-6 text-stone-300">
+                  {t("cards.studioBody")}
+                </p>
+                <Link
+                  href="/launch-studio"
+                  data-testid="open-launch-studio"
+                  className="mt-4 inline-block w-fit rounded-lg border border-white/15 bg-white/5 px-5 py-2.5 font-medium text-stone-100 transition-colors hover:border-marigold/60"
+                >
+                  {t("openStudio")}
+                </Link>
+              </Reveal>
+            )}
+
             {summary && (
               <Reveal className={card} delay={0.32}>
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-stone-400">

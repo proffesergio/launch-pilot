@@ -56,14 +56,22 @@ Owner-approved build program. Full rationale lives in `discovery.md`, `docs/arch
 - [ ] `pnpm eval` harness in CI (refusal, no-hallucination, tone, bilingual)
 - [ ] P95 first-token < 800ms; E2E coach green
 
-## M3.5 — Profile & Gig Launch Studio (new)
-- [ ] `launch_assets` schema + migration
-- [ ] Asset generator: Fiverr (title/packages/description/FAQ/gallery shot-list) + Upwork
-      (headline/overview/spec-portfolio briefs); editable; regeneration inside AI budget
-- [ ] Guided publish walkthrough: step wizard, redrawn illustrations, copy-to-clipboard,
-      steps mapped to boss missions ("profile live", "gig live")
-- [ ] Readiness review: Atlas critique vs track rules; honest can't-verify notes
-- [ ] Boundary tests: no marketplace HTTP anywhere; eval: refuses automation asks
+## M3.5 — Profile & Gig Launch Studio (built 2026-07-12, flag `m35_launch_studio`)
+See design: `docs/superpowers/specs/2026-07-12-launch-studio-design.md`.
+- [x] `launch_assets` schema + migration (0009)
+- [x] Asset generator: **both** Fiverr gig + Upwork profile (Sonnet, grounded, English-only
+      guard); editable; regeneration inside the daily AI cap
+- [x] Guided publish walkthrough: copy-to-clipboard steps. Publish is **decoupled** — it
+      marks the asset published + awards idempotent `asset_published` XP and points the user
+      to tick the boss mission in the roadmap (keeps journey state in one place). Own
+      illustrations still TODO (uses labeled copy blocks for now).
+- [x] Readiness review: Atlas critique vs track rules; honest pass/warn/can't-verify findings
+- [x] **Playbook (added 2026-07-12):** per-platform tips (from tracks) + curated tools
+      catalog across all 17 platforms; job boards get an apply-with-CV note
+- [x] Boundary tests: no-marketplace-HTTP unit assertion; eval refuses automation + invents
+      no rule (`pnpm eval` 8/8)
+- [~] E2E written (`e2e/launch-studio.spec.ts`); deterministic Playbook path + AI-gated
+      generate→publish path (STUDIO_E2E). Not yet executed in CI.
 - [ ] **Cohort checkpoint: ship M0–M3.5 behind flags to real users**
 
 ## M4 — gamification

@@ -14,8 +14,11 @@ import { createAnthropic } from "@ai-sdk/anthropic";
 import { generateText } from "ai";
 
 import { coachCases } from "../evals/coach-cases";
+import { studioReviewCases } from "../evals/studio-cases";
 import { loadPlatformTracks } from "../src/lib/content";
 import { retrieveGrounding } from "../src/lib/grounding";
+import { reviewAsset } from "../src/lib/launch-studio";
+import type { AssetContent } from "../src/lib/launch-assets";
 
 async function main() {
   const apiKey = process.env.ANTHROPIC_API_KEY?.trim();
@@ -76,8 +79,41 @@ async function main() {
     }
   }
 
-  console.log(`\neval: ${coachCases.length - failures}/${coachCases.length} passed`);
-  if (failures > 0) process.exit(1);
+  // ── Launch Studio review boundary evals (M3.5) ─────────────────────────
+  let studioFailures = 0;
+  for (const c of studioReviewCases) {
+    try {
+      const { findings } = await reviewAsset(
+        c.kind,
+        c.content as AssetContent,
+        tracks[c.platform],
+      );
+      const blob = JSON.stringify(findings);
+      const problems: string[] = [];
+      for (const rx of c.mustMatch ?? []) {
+        if (!rx.test(blob)) problems.push(`expected match: ${rx}`);
+      }
+      for (const rx of c.mustNotMatch ?? []) {
+        if (rx.test(blob)) problems.push(`forbidden match: ${rx}`);
+      }
+      if (problems.length) {
+        studioFailures += 1;
+        console.log(`✗ ${c.id}`);
+        for (const p of problems) console.log(`    ${p}`);
+        console.log(`    findings: ${blob.slice(0, 200)}…`);
+      } else {
+        console.log(`✓ ${c.id}`);
+      }
+    } catch (err) {
+      studioFailures += 1;
+      console.log(`✗ ${c.id} — call failed: ${(err as Error).message.slice(0, 120)}`);
+    }
+  }
+
+  const total = coachCases.length + studioReviewCases.length;
+  const passed = total - failures - studioFailures;
+  console.log(`\neval: ${passed}/${total} passed`);
+  if (failures + studioFailures > 0) process.exit(1);
 }
 
 main();
