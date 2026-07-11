@@ -78,12 +78,75 @@
       "skill": "Skill",
       "platform": "Platform",
       "state": "Journey stage"
-    }
+    },
+    "viewProfile": "Your profile"
+  },
+  "profilePage": {
+    "title": "Your profile",
+    "backToDashboard": "Back to dashboard",
+    "memberSince": "On the journey since {date}",
+    "stats": {
+      "totalXp": "total XP",
+      "level": "level",
+      "streak": "day streak",
+      "activeDays": "active days"
+    },
+    "badgesTitle": "Badges",
+    "badgesHint": "Earned by doing — never by paying.",
+    "badges": {
+      "first_steps": { "name": "First steps", "desc": "Completed onboarding" },
+      "pathfinder": { "name": "Pathfinder", "desc": "Generated your 90-day roadmap" },
+      "first_words": { "name": "First words", "desc": "First session with Atlas" },
+      "streak_3": { "name": "Warming up", "desc": "3-day activity streak" },
+      "streak_7": { "name": "On fire", "desc": "7-day activity streak" },
+      "level_2": { "name": "Climber", "desc": "Reached level 2" },
+      "level_5": { "name": "Momentum", "desc": "Reached level 5" },
+      "xp_500": { "name": "Five hundred", "desc": "Earned 500 XP" }
+    },
+    "locked": "Locked",
+    "journeyTitle": "Your journey",
+    "journey": {
+      "onboarding": "Onboarding",
+      "skill_assessment": "Skill assessment",
+      "foundation": "Foundation",
+      "profile_built": "Profile built",
+      "gig_live": "Gig live",
+      "first_order": "First order",
+      "level_up": "Level up",
+      "scaling": "Scaling"
+    },
+    "focusTitle": "What to focus on now",
+    "focusHints": {
+      "onboarding": "Answer the five onboarding questions — everything starts from there.",
+      "skill_assessment": "Your skill is set. Generate your roadmap from the dashboard.",
+      "foundation": "Work through Phase 1 missions. The profile boss mission unlocks Phase 2.",
+      "profile_built": "Your profile is live — now publish your first gig to open Phase 3.",
+      "gig_live": "Your gig is out there. Focus on outreach missions and first responses.",
+      "first_order": "You've earned money — protect the review, deliver clean, then level up.",
+      "level_up": "Raise your prices and polish your portfolio with what you've learned.",
+      "scaling": "Consistency wins now: keep the streak, keep delivering, raise your floor."
+    },
+    "timelineTitle": "All activity",
+    "timelineEmpty": "Nothing yet — your first XP is one tap away.",
+    "noProfile": "Complete onboarding to unlock your full profile."
   },
   "onboarding": {
     "skill": {
       "question": "What can you do, or what would you love to learn?",
-      "placeholder": "In your own words — Bangla or English. For example: I make logos for my cousin's shop."
+      "placeholder": "In your own words — Bangla or English. For example: I make logos for my cousin's shop.",
+      "suggestionsLabel": "Or tap one to start — you can still edit it:",
+      "suggestions": {
+        "writing": "I write articles and blog posts",
+        "graphic_design": "I design logos and banners",
+        "web_development": "I build websites",
+        "video_editing": "I edit videos and reels",
+        "virtual_assistance": "I can work as a virtual assistant",
+        "data_entry": "I do data entry and Excel work",
+        "translation": "I translate between Bangla and English",
+        "social_media": "I manage social media pages",
+        "voice_over": "I do voice over and dubbing",
+        "tutoring": "I tutor students"
+      }
     },
     "platform": {
       "question": "Where do you want to earn first?",
@@ -164,6 +227,78 @@
         "body": "Atlas drafts your profile, your gig, your client messages — and you publish them yourself. Verified platform facts only."
       }
     },
+    "skillsLabel": "Tap what you can already do — see where it leads",
+    "skills": {
+      "writing": "Writing",
+      "graphic_design": "Graphic design",
+      "web_development": "Web development",
+      "video_editing": "Video editing",
+      "virtual_assistance": "Virtual assistance",
+      "data_entry": "Data entry",
+      "translation": "Translation",
+      "social_media": "Social media",
+      "voice_over": "Voice over",
+      "tutoring": "Tutoring"
+    },
+    "stats": {
+      "missions": "guided missions",
+      "platforms": "marketplaces from day one",
+      "languages": "languages, plus tap-to-listen",
+      "cost": "until your first real earning"
+    },
+    "tutorialTitle": "Three screens. That's the whole loop.",
+    "tutorialSub": "No tour needed — watch it happen.",
+    "tutorial": {
+      "0": {
+        "title": "Sign in with your phone",
+        "body": "A 6-digit code. No password, no card, under a minute."
+      },
+      "1": {
+        "title": "Tell Atlas what you can do",
+        "body": "Type it or tap a skill — five questions become your personal 90-day roadmap."
+      },
+      "2": {
+        "title": "Show up daily, coached by Atlas",
+        "body": "Small missions, XP and streaks — with honest answers grounded in verified platform facts."
+      }
+    },
+    "mock": {
+      "phoneTitle": "Sign in to LaunchPilot",
+      "phoneCta": "Send me a code",
+      "wizardTitle": "What can you do?",
+      "chatQ": "How should I price my first gig?",
+      "chatA": "Start small and clear: three packages, fast delivery, honest scope. Let's draft yours together —",
+      "roadmapTitle": "Phase 1 — Foundation"
+    },
+    "featuresTitle": "Built for your first earning, not another certificate",
+    "features": {
+      "roadmap": {
+        "title": "A 90-day roadmap, not a course",
+        "body": "Small daily missions sized to your hours and level, with boss missions that unlock the next phase."
+      },
+      "xp": {
+        "title": "XP, levels and streaks",
+        "body": "Every real step earns XP — finishing setup, daily check-ins, coaching sessions. Progress you can see."
+      },
+      "atlas": {
+        "title": "Atlas, a coach that tells the truth",
+        "body": "Platform answers come only from verified, versioned notes. When Atlas doesn't know, it says so."
+      },
+      "bilingual": {
+        "title": "Bangla and English, spoken too",
+        "body": "The whole product in both languages from day one, with tap-to-listen audio on the important parts."
+      },
+      "honest": {
+        "title": "The unglamorous parts included",
+        "body": "Fees, payout rails, taxes, realistic timelines — the things most courses skip are missions here."
+      },
+      "safe": {
+        "title": "Your accounts stay yours",
+        "body": "LaunchPilot never touches your marketplace account. It guides; you publish. Advisory only, by design."
+      }
+    },
+    "finalTitle": "Your first client is 90 days of small steps away",
+    "finalBody": "Free to start, free until you earn. Then pay what you think it was worth.",
     "honestTitle": "The honest part",
     "honestBody": "We don't promise you'll be rich in 60 days — nobody honest can. We promise a real path: show up ~30 minutes a day, complete the missions, and you'll know exactly what to do next, including the unglamorous parts like fees, taxes on payouts, and how money actually reaches bKash. LaunchPilot never touches your marketplace account. It's free, and after your first real earning, you pay what you think it was worth.",
     "footer": "Made for Bangladesh"

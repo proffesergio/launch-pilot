@@ -1,8 +1,26 @@
 import { useTranslations } from "next-intl";
 
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { RevealInView } from "@/components/reveal-in-view";
 import { TapToListen } from "@/components/tap-to-listen";
 import { Link } from "@/i18n/navigation";
+import { loadMissionTemplates } from "@/lib/content";
+import { SKILLS } from "@/lib/skills";
+import { FloatingSkills, type SkillChip } from "./landing/floating-skills";
+import { Tutorial } from "./landing/tutorial";
+
+const SKILL_EMOJI: Record<string, string> = {
+  writing: "✍️",
+  graphic_design: "🎨",
+  web_development: "💻",
+  video_editing: "🎬",
+  virtual_assistance: "🗂️",
+  data_entry: "📊",
+  translation: "🌐",
+  social_media: "📣",
+  voice_over: "🎙️",
+  tutoring: "📚",
+};
 
 /** The product's core metaphor as the hero visual: a journey toward sunrise. */
 function JourneyPath({ labels }: { labels: [string, string, string, string] }) {
@@ -51,18 +69,51 @@ function JourneyPath({ labels }: { labels: [string, string, string, string] }) {
   );
 }
 
+const FEATURES = [
+  { key: "roadmap", emoji: "🗺️" },
+  { key: "xp", emoji: "⚡" },
+  { key: "atlas", emoji: "🧭" },
+  { key: "bilingual", emoji: "🔊" },
+  { key: "honest", emoji: "💸" },
+  { key: "safe", emoji: "🛡️" },
+] as const;
+
 export default function Home() {
   const t = useTranslations();
+  const missionCount = loadMissionTemplates().length;
 
-  const steps: { title: string; body: string }[] = [0, 1, 2].map((i) => ({
-    title: t(`landing.steps.${i}.title`),
-    body: t(`landing.steps.${i}.body`),
+  const skillChips: SkillChip[] = SKILLS.filter(
+    (s) => s !== "general_freelancing",
+  ).map((id) => ({
+    id,
+    label: t(`landing.skills.${id}`),
+    emoji: SKILL_EMOJI[id] ?? "✨",
   }));
 
+  const tutorialSteps = [0, 1, 2].map((i) => ({
+    title: t(`landing.tutorial.${i}.title`),
+    body: t(`landing.tutorial.${i}.body`),
+  }));
+  const tutorialMock = {
+    phoneTitle: t("landing.mock.phoneTitle"),
+    phoneCta: t("landing.mock.phoneCta"),
+    wizardTitle: t("landing.mock.wizardTitle"),
+    chatQ: t("landing.mock.chatQ"),
+    chatA: t("landing.mock.chatA"),
+    roadmapTitle: t("landing.mock.roadmapTitle"),
+  };
+
+  const stats: { value: string; label: string }[] = [
+    { value: String(missionCount), label: t("landing.stats.missions") },
+    { value: "2", label: t("landing.stats.platforms") },
+    { value: "2", label: t("landing.stats.languages") },
+    { value: "$0", label: t("landing.stats.cost") },
+  ];
+
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col bg-[#191410] text-stone-100">
       {/* ── Hero: dawn over the delta ─────────────────────────────── */}
-      <section className="dawn-sky grain text-stone-100">
+      <section className="dawn-sky grain">
         <header className="relative z-10 mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5">
           <span className="text-lg font-bold tracking-tight text-stone-50">
             {t("common.appName")}
@@ -114,7 +165,13 @@ export default function Home() {
             </Link>
             <span className="text-sm text-stone-400">{t("landing.ctaHint")}</span>
           </div>
-          <div className="rise mt-6 w-full" style={{ animationDelay: "0.65s" }}>
+
+          {/* Floating skill chips: tap what you already do. */}
+          <div className="rise mt-4 w-full" style={{ animationDelay: "0.65s" }}>
+            <FloatingSkills skills={skillChips} label={t("landing.skillsLabel")} />
+          </div>
+
+          <div className="rise mt-2 w-full" style={{ animationDelay: "0.8s" }}>
             <div className="mx-auto flex justify-center">
               <JourneyPath
                 labels={[
@@ -129,46 +186,112 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── How it works ──────────────────────────────────────────── */}
-      <section className="mx-auto w-full max-w-5xl px-6 py-16">
-        <h2 className="text-2xl font-bold tracking-tight text-stone-900">
-          {t("landing.howTitle")}
-        </h2>
-        <div className="mt-8 grid gap-4 sm:grid-cols-3">
-          {steps.map((step, i) => (
-            <div
-              key={i}
-              className="group relative overflow-hidden rounded-2xl border border-stone-200 bg-white p-6 transition-shadow hover:shadow-[0_8px_30px_rgba(245,165,36,0.15)]"
-            >
-              <span className="font-mono text-4xl font-bold text-[#F5A524]/30 transition-colors group-hover:text-[#F5A524]/60">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="mt-3 text-lg font-semibold text-stone-900">
-                {step.title}
-              </h3>
-              <p className="mt-1.5 leading-7 text-stone-600">{step.body}</p>
-            </div>
+      {/* ── Honest numbers strip ──────────────────────────────────── */}
+      <section className="border-y border-white/10 bg-white/[0.03]">
+        <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-6 px-6 py-10 sm:grid-cols-4">
+          {stats.map((stat, i) => (
+            <RevealInView key={stat.label} delay={i * 0.08}>
+              <p className="font-mono text-3xl font-bold text-marigold">
+                {stat.value}
+              </p>
+              <p className="mt-1 text-sm leading-5 text-stone-400">{stat.label}</p>
+            </RevealInView>
           ))}
         </div>
       </section>
 
-      {/* ── The honest promise ────────────────────────────────────── */}
-      <section className="border-y border-stone-200 bg-white">
-        <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-6 py-14">
-          <span className="inline-block h-1.5 w-16 rounded-full bg-[#F5A524]" />
-          <h2 className="text-2xl font-bold tracking-tight text-stone-900">
-            {t("landing.honestTitle")}
+      {/* ── Animated walkthrough: sign in → onboard → Atlas ───────── */}
+      <section className="mx-auto w-full max-w-5xl px-6 py-20">
+        <RevealInView>
+          <h2 className="text-balance text-3xl font-bold tracking-tight text-stone-50">
+            {t("landing.tutorialTitle")}
           </h2>
-          <p className="text-pretty leading-8 text-stone-600">
-            {t("landing.honestBody")}
-          </p>
-          <TapToListen text={t("landing.honestBody")} />
+          <p className="mt-2 text-stone-400">{t("landing.tutorialSub")}</p>
+        </RevealInView>
+        <RevealInView className="mt-10" delay={0.1}>
+          <Tutorial
+            steps={tutorialSteps}
+            mock={tutorialMock}
+            skillSamples={[
+              t("landing.skills.writing"),
+              t("landing.skills.graphic_design"),
+              t("landing.skills.video_editing"),
+            ]}
+          />
+        </RevealInView>
+      </section>
+
+      {/* ── Features ──────────────────────────────────────────────── */}
+      <section className="tech-grid border-t border-white/10">
+        <div className="mx-auto w-full max-w-5xl px-6 py-20">
+          <RevealInView>
+            <h2 className="max-w-2xl text-balance text-3xl font-bold tracking-tight text-stone-50">
+              {t("landing.featuresTitle")}
+            </h2>
+          </RevealInView>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {FEATURES.map((feature, i) => (
+              <RevealInView key={feature.key} delay={(i % 3) * 0.1}>
+                <div className="group h-full rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm transition-colors hover:border-marigold/50">
+                  <span className="text-2xl" aria-hidden>
+                    {feature.emoji}
+                  </span>
+                  <h3 className="mt-3 text-lg font-semibold text-stone-50">
+                    {t(`landing.features.${feature.key}.title`)}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-6 text-stone-400">
+                    {t(`landing.features.${feature.key}.body`)}
+                  </p>
+                </div>
+              </RevealInView>
+            ))}
+          </div>
         </div>
       </section>
 
-      <footer className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-8 text-sm text-stone-500">
-        <span>{t("common.appName")}</span>
-        <span>{t("landing.footer")}</span>
+      {/* ── The honest promise ────────────────────────────────────── */}
+      <section className="border-t border-white/10">
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-6 py-16">
+          <RevealInView>
+            <span className="inline-block h-1.5 w-16 rounded-full bg-marigold" />
+            <h2 className="mt-4 text-2xl font-bold tracking-tight text-stone-50">
+              {t("landing.honestTitle")}
+            </h2>
+            <p className="mt-3 text-pretty leading-8 text-stone-300">
+              {t("landing.honestBody")}
+            </p>
+            <div className="mt-3">
+              <TapToListen text={t("landing.honestBody")} />
+            </div>
+          </RevealInView>
+        </div>
+      </section>
+
+      {/* ── Final CTA ─────────────────────────────────────────────── */}
+      <section className="dawn-sky grain border-t border-white/10">
+        <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5 px-6 py-20 text-center">
+          <RevealInView>
+            <h2 className="text-balance text-3xl font-bold tracking-tight text-stone-50">
+              {t("landing.finalTitle")}
+            </h2>
+            <p className="mt-3 text-stone-300">{t("landing.finalBody")}</p>
+            <div className="mt-6 flex justify-center">
+              <Link
+                href="/sign-in"
+                className="rounded-full bg-[#F5A524] px-8 py-3.5 text-lg font-semibold text-stone-900 shadow-[0_0_40px_rgba(245,165,36,0.35)] transition-transform hover:scale-[1.03]"
+              >
+                {t("landing.cta")}
+              </Link>
+            </div>
+          </RevealInView>
+        </div>
+      </section>
+
+      <footer className="border-t border-white/10">
+        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-8 text-sm text-stone-500">
+          <span>{t("common.appName")}</span>
+          <span>{t("landing.footer")}</span>
+        </div>
       </footer>
     </div>
   );

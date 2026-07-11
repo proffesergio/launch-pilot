@@ -86,3 +86,52 @@ export function computeStreak(days: string[], today: string): number {
   }
   return streak;
 }
+
+/** Best consecutive-day run anywhere in history — badges never un-earn. */
+export function longestStreak(days: string[]): number {
+  const sorted = [...new Set(days.map(dayNumber))].sort((a, b) => a - b);
+  let best = 0;
+  let run = 0;
+  for (let i = 0; i < sorted.length; i++) {
+    run = i > 0 && sorted[i] === sorted[i - 1] + 1 ? run + 1 : 1;
+    if (run > best) best = run;
+  }
+  return best;
+}
+
+/** Canonical display order: firsts, then consistency, then climb. */
+export const ALL_BADGES = [
+  "first_steps",
+  "pathfinder",
+  "first_words",
+  "streak_3",
+  "streak_7",
+  "level_2",
+  "level_5",
+  "xp_500",
+] as const;
+
+export type BadgeId = (typeof ALL_BADGES)[number];
+
+export type BadgeFacts = {
+  /** Distinct event kinds the user has ever earned. */
+  kinds: readonly XpEventKind[];
+  bestStreak: number;
+  level: number;
+  totalXp: number;
+};
+
+export function earnedBadges(facts: BadgeFacts): BadgeId[] {
+  const kinds = new Set(facts.kinds);
+  const checks: Record<BadgeId, boolean> = {
+    first_steps: kinds.has("onboarding_completed"),
+    pathfinder: kinds.has("roadmap_generated"),
+    first_words: kinds.has("coach_session"),
+    streak_3: facts.bestStreak >= 3,
+    streak_7: facts.bestStreak >= 7,
+    level_2: facts.level >= 2,
+    level_5: facts.level >= 5,
+    xp_500: facts.totalXp >= 500,
+  };
+  return ALL_BADGES.filter((badge) => checks[badge]);
+}

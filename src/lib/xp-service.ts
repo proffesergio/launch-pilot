@@ -7,8 +7,11 @@ import {
   XP_AWARDS,
   XpEventKindSchema,
   computeStreak,
+  earnedBadges,
   levelFromXp,
+  longestStreak,
   utcToday,
+  type BadgeId,
   type LevelInfo,
   type XpEventKind,
 } from "./gamification";
@@ -123,5 +126,61 @@ export async function getGamificationSummary(
     // The dashboard renders zeroed rather than crashing; the failure is loud.
     logger.error({ event: "xp.summary_failed", userId, err });
     return EMPTY_SUMMARY;
+  }
+}
+
+export type ProfileStats = GamificationSummary & {
+  badges: BadgeId[];
+  activeDays: number;
+  timeline: Pick<XpEventRow, "kind" | "amount" | "day" | "createdAt">[];
+};
+
+/** The profile page's read: summary + badges + a longer activity timeline. */
+export async function getProfileStats(userId: string): Promise<ProfileStats> {
+  try {
+    const db = getDb();
+    const [totals, days, kinds, timeline] = await Promise.all([
+      db
+        .select({ total: sql<number>`coalesce(sum(${xpEvents.amount}), 0)` })
+        .from(xpEvents)
+        .where(eq(xpEvents.userId, userId)),
+      db
+        .selectDistinct({ day: xpEvents.day })
+        .from(xpEvents)
+        .where(eq(xpEvents.userId, userId)),
+      db
+        .selectDistinct({ kind: xpEvents.kind })
+        .from(xpEvents)
+        .where(eq(xpEvents.userId, userId)),
+      db.query.xpEvents.findMany({
+        where: eq(xpEvents.userId, userId),
+        orderBy: [desc(xpEvents.createdAt)],
+        limit: 30,
+        columns: { kind: true, amount: true, day: true, createdAt: true },
+      }),
+    ]);
+
+    const totalXp = Number(totals[0]?.total ?? 0);
+    const dayList = days.map((d) => d.day);
+    const level = levelFromXp(totalXp);
+    return {
+      totalXp,
+      level,
+      streak: computeStreak(dayList, utcToday()),
+      recent: timeline.slice(0, 8),
+      badges: earnedBadges({
+        kinds: kinds
+          .map((k) => XpEventKindSchema.safeParse(k.kind))
+          .flatMap((k) => (k.success ? [k.data] : [])),
+        bestStreak: longestStreak(dayList),
+        level: level.level,
+        totalXp,
+      }),
+      activeDays: dayList.length,
+      timeline,
+    };
+  } catch (err) {
+    logger.error({ event: "xp.profile_stats_failed", userId, err });
+    return { ...EMPTY_SUMMARY, badges: [], activeDays: 0, timeline: [] };
   }
 }

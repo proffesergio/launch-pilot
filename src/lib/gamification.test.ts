@@ -1,10 +1,13 @@
 import { describe, it, expect } from "vitest";
 
 import {
+  ALL_BADGES,
   XP_AWARDS,
   XpEventKindSchema,
-  levelFromXp,
   computeStreak,
+  earnedBadges,
+  levelFromXp,
+  longestStreak,
 } from "./gamification";
 
 describe("XP_AWARDS", () => {
@@ -118,5 +121,67 @@ describe("computeStreak", () => {
 
   it("crosses month boundaries by calendar, not string, arithmetic", () => {
     expect(computeStreak(["2026-06-30", "2026-07-01"], "2026-07-01")).toBe(2);
+  });
+});
+
+describe("longestStreak", () => {
+  it("is zero with no activity", () => {
+    expect(longestStreak([])).toBe(0);
+  });
+
+  it("finds the best run anywhere in history, not just the current one", () => {
+    expect(
+      longestStreak([
+        "2026-07-01",
+        "2026-07-02",
+        "2026-07-03",
+        "2026-07-04",
+        "2026-07-08",
+        "2026-07-09",
+      ]),
+    ).toBe(4);
+  });
+
+  it("tolerates unsorted input and duplicates", () => {
+    expect(longestStreak(["2026-07-03", "2026-07-01", "2026-07-02", "2026-07-02"])).toBe(3);
+  });
+});
+
+describe("earnedBadges", () => {
+  const nothing = { kinds: [], bestStreak: 0, level: 1, totalXp: 0 } as const;
+
+  it("awards nothing to a brand-new user", () => {
+    expect(earnedBadges(nothing)).toEqual([]);
+  });
+
+  it("awards event-based badges for each first", () => {
+    expect(
+      earnedBadges({ ...nothing, kinds: ["onboarding_completed"] }),
+    ).toEqual(["first_steps"]);
+    expect(
+      earnedBadges({
+        ...nothing,
+        kinds: ["onboarding_completed", "roadmap_generated", "coach_session"],
+      }),
+    ).toEqual(["first_steps", "pathfinder", "first_words"]);
+  });
+
+  it("awards streak, level and XP milestones", () => {
+    expect(
+      earnedBadges({ kinds: [], bestStreak: 7, level: 5, totalXp: 500 }),
+    ).toEqual(["streak_3", "streak_7", "level_2", "level_5", "xp_500"]);
+    expect(
+      earnedBadges({ kinds: [], bestStreak: 3, level: 2, totalXp: 499 }),
+    ).toEqual(["streak_3", "level_2"]);
+  });
+
+  it("returns badges in the canonical display order", () => {
+    const everything = earnedBadges({
+      kinds: ["onboarding_completed", "roadmap_generated", "coach_session"],
+      bestStreak: 10,
+      level: 6,
+      totalXp: 2000,
+    });
+    expect(everything).toEqual([...ALL_BADGES]);
   });
 });

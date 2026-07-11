@@ -107,7 +107,20 @@ export default async function DashboardPage({
               {t("signedInAs", { email: identity })}
             </p>
           </div>
-          <SignOutButton />
+          <div className="flex items-center gap-3">
+            {gamified && (
+              <Link
+                href="/profile"
+                data-testid="open-profile"
+                aria-label={t("viewProfile")}
+                title={t("viewProfile")}
+                className="grid h-11 w-11 place-items-center rounded-full border border-marigold/50 bg-marigold/15 font-semibold text-marigold transition-transform hover:scale-105"
+              >
+                {(name || identity || "?").trim().charAt(0).toUpperCase()}
+              </Link>
+            )}
+            <SignOutButton />
+          </div>
         </header>
 
         {summary && (

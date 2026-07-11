@@ -1,13 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { useTranslations } from "next-intl";
 
 import { TapToListen } from "@/components/tap-to-listen";
 import { useRouter } from "@/i18n/navigation";
 import type { OnboardingAnswers } from "@/lib/onboarding";
+import { SKILLS } from "@/lib/skills";
 
 import { completeOnboarding } from "./actions";
+
+const SUGGESTED_SKILLS = SKILLS.filter((s) => s !== "general_freelancing");
 
 const STEPS = ["skill", "platform", "hours", "english", "experience"] as const;
 type Step = (typeof STEPS)[number];
@@ -50,6 +54,7 @@ function Choice({
 
 export function OnboardingWizard() {
   const t = useTranslations("onboarding");
+  const reduced = useReducedMotion();
   const router = useRouter();
   const [stepIndex, setStepIndex] = useState(0);
   const [draft, setDraft] = useState<Draft>({});
@@ -106,15 +111,47 @@ export function OnboardingWizard() {
       </div>
 
       {step === "skill" && (
-        <textarea
-          data-testid="onboarding-skill"
-          value={draft.rawSkill ?? ""}
-          onChange={(e) => setDraft({ ...draft, rawSkill: e.target.value })}
-          placeholder={t("skill.placeholder")}
-          rows={3}
-          maxLength={300}
-          className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-900 outline-none focus:border-[#F5A524]"
-        />
+        <div className="flex flex-col gap-4">
+          <textarea
+            data-testid="onboarding-skill"
+            value={draft.rawSkill ?? ""}
+            onChange={(e) => setDraft({ ...draft, rawSkill: e.target.value })}
+            placeholder={t("skill.placeholder")}
+            rows={3}
+            maxLength={300}
+            className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-900 outline-none focus:border-[#F5A524]"
+          />
+          <div className="flex flex-col gap-2.5">
+            <p className="text-sm text-stone-500">{t("skill.suggestionsLabel")}</p>
+            <div className="flex flex-wrap gap-2">
+              {SUGGESTED_SKILLS.map((skillId, i) => {
+                const phrase = t(`skill.suggestions.${skillId}`);
+                const selected = draft.rawSkill === phrase;
+                return (
+                  <motion.button
+                    key={skillId}
+                    type="button"
+                    data-testid={`skill-suggestion-${skillId}`}
+                    aria-pressed={selected}
+                    onClick={() => setDraft({ ...draft, rawSkill: phrase })}
+                    initial={reduced ? false : { opacity: 0, scale: 0.85, y: 6 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ delay: 0.1 + i * 0.05, duration: 0.35 }}
+                    whileHover={reduced ? undefined : { scale: 1.05 }}
+                    whileTap={reduced ? undefined : { scale: 0.97 }}
+                    className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
+                      selected
+                        ? "border-[#F5A524] bg-amber-50 text-stone-900"
+                        : "border-stone-300 bg-white text-stone-700 hover:border-[#F5A524]"
+                    }`}
+                  >
+                    {phrase}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
       )}
 
       {step === "platform" && (
