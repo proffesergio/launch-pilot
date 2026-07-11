@@ -55,7 +55,9 @@ test("magic-link sign-in reaches the dashboard and signs out", async ({
   await expect(page.getByText("Link sent.", { exact: false })).toBeVisible();
 
   // M0 has no email provider: the dev mailbox holds the link.
-  const mailbox = await request.get("/api/dev/magic-link");
+  const mailbox = await request.get(
+    `/api/dev/magic-link?email=${encodeURIComponent(email)}`,
+  );
   expect(mailbox.ok()).toBeTruthy();
   const { url } = (await mailbox.json()) as { url: string };
 

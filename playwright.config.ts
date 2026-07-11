@@ -7,9 +7,14 @@ import { defineConfig, devices } from "@playwright/test";
  */
 export default defineConfig({
   testDir: "./e2e",
+  // Generous: dev-machine networks can add ~10s per cold DB roundtrip. The
+  // production perf budget is enforced by Lighthouse, not these timeouts.
+  timeout: 90_000,
+  expect: { timeout: 15_000 },
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  // One local retry: dev-machine networks drop connections; CI gets two.
+  retries: process.env.CI ? 2 : 1,
   reporter: process.env.CI ? "github" : "list",
   use: {
     baseURL: "http://localhost:3000",

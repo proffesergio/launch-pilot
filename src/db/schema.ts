@@ -1,4 +1,12 @@
-import { integer, jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+  integer,
+  jsonb,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
 
 export * from "./auth-schema";
 import { user } from "./auth-schema";
@@ -65,6 +73,40 @@ export const roadmapMissions = pgTable("roadmap_missions", {
 });
 
 export type RoadmapMissionRow = typeof roadmapMissions.$inferSelect;
+
+/** Coach turns (M3): every message with token + cost accounting (§4). */
+export const coachMessages = pgTable("coach_messages", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  role: text("role").notNull(), // user | assistant
+  content: text("content").notNull(),
+  locale: text("locale").notNull(),
+  tokensIn: integer("tokens_in").notNull().default(0),
+  tokensOut: integer("tokens_out").notNull().default(0),
+  costUsdMicros: integer("cost_usd_micros").notNull().default(0),
+  model: text("model"),
+  promptVersion: text("prompt_version"),
+  correlationId: text("correlation_id"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+/** Per-user daily AI spend — the cheap hot-path read for the cap check (§4). */
+export const aiUsageDaily = pgTable(
+  "ai_usage_daily",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    usageDate: text("usage_date").notNull(), // YYYY-MM-DD (UTC)
+    costUsdMicros: integer("cost_usd_micros").notNull().default(0),
+    calls: integer("calls").notNull().default(0),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.usageDate] })],
+);
 
 /**
  * Walking-skeleton table. Its only job is to prove a real read/write travels

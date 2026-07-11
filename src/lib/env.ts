@@ -50,7 +50,11 @@ export type Env = z.infer<typeof EnvSchema> & {
  * variable when validation fails — so the failure is actionable at a glance.
  */
 export function parseEnv(source: Record<string, string | undefined>): Env {
-  const result = EnvSchema.safeParse(source);
+  // A copied .env.example leaves blanks; blank means "not set", never a value.
+  const cleaned = Object.fromEntries(
+    Object.entries(source).filter(([, v]) => v !== undefined && v.trim() !== ""),
+  );
+  const result = EnvSchema.safeParse(cleaned);
   if (!result.success) {
     const details = result.error.issues
       .map((issue) => {

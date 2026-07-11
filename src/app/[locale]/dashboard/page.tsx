@@ -36,15 +36,26 @@ export default async function DashboardPage({
         {t("signedInAs", { email: session!.user.email })}
       </p>
 
-      {profile && getFlag("m2_roadmap") && (
-        <Link
-          href="/roadmap"
-          data-testid="view-roadmap"
-          className="w-fit rounded-lg bg-[#F5A524] px-5 py-2.5 font-medium text-stone-900"
-        >
-          {t("viewRoadmap")}
-        </Link>
-      )}
+      <div className="flex flex-wrap gap-3">
+        {profile && getFlag("m2_roadmap") && (
+          <Link
+            href="/roadmap"
+            data-testid="view-roadmap"
+            className="w-fit rounded-lg bg-[#F5A524] px-5 py-2.5 font-medium text-stone-900"
+          >
+            {t("viewRoadmap")}
+          </Link>
+        )}
+        {getFlag("m3_coach") && (
+          <Link
+            href="/coach"
+            data-testid="open-coach"
+            className="w-fit rounded-lg border border-stone-300 bg-white px-5 py-2.5 font-medium text-stone-900"
+          >
+            {t("openCoach")}
+          </Link>
+        )}
+      </div>
 
       {profile ? (
         <dl

@@ -1,8 +1,9 @@
-import { neon } from "@neondatabase/serverless";
+import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 
 import { getEnv } from "@/lib/env";
 
+import { withConnectRetry } from "./fetch-retry";
 import * as schema from "./schema";
 
 /**
@@ -15,6 +16,11 @@ let cached: ReturnType<typeof drizzle<typeof schema>> | undefined;
 
 export function getDb() {
   if (!cached) {
+    // Retry connect-phase failures only (see fetch-retry.ts) — first
+    // connections on dual-stack networks are observably flaky.
+    neonConfig.fetchFunction = withConnectRetry((url, init) =>
+      fetch(url as string, init),
+    );
     const sql = neon(getEnv().DATABASE_URL);
     cached = drizzle(sql, { schema });
   }

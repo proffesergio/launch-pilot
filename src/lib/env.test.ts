@@ -34,4 +34,19 @@ describe("parseEnv", () => {
       /BETTER_AUTH_SECRET/,
     );
   });
+
+  it("treats blank values as absent — a copied .env.example must not fail", () => {
+    const env = parseEnv({
+      ...validSource,
+      DATABASE_URL_UNPOOLED: "",
+      GOOGLE_TTS_API_KEY: "   ",
+    });
+    // Optional blank → fallback/undefined, not a validation error.
+    expect(env.DATABASE_URL_UNPOOLED).toBe(validSource.DATABASE_URL);
+    expect(env.GOOGLE_TTS_API_KEY).toBeUndefined();
+    // Required blank still fails, with the "required" message.
+    expect(() => parseEnv({ ...validSource, DATABASE_URL: "" })).toThrowError(
+      /DATABASE_URL/,
+    );
+  });
 });

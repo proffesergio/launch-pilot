@@ -12,7 +12,9 @@ async function signIn(page: Page, email: string) {
   await page.getByLabel("Your email address").fill(email);
   await page.getByRole("button", { name: "Send me a sign-in link" }).click();
   await expect(page.getByText("Link sent.", { exact: false })).toBeVisible();
-  const mailbox = await page.request.get("/api/dev/magic-link");
+  const mailbox = await page.request.get(
+    `/api/dev/magic-link?email=${encodeURIComponent(email)}`,
+  );
   const { url } = (await mailbox.json()) as { url: string };
   await page.goto(url);
   await expect(page).toHaveURL(/\/dashboard$/);

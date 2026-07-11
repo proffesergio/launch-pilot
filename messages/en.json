@@ -32,6 +32,7 @@
     "signOut": "Sign out",
     "startOnboarding": "Start: tell us about your skill",
     "viewRoadmap": "View your roadmap",
+    "openCoach": "Talk to Atlas",
     "profile": {
       "skill": "Skill",
       "platform": "Platform",
@@ -76,6 +77,15 @@
     "next": "Next",
     "finish": "Build my roadmap",
     "error": "Saving failed. Your answers are still here — try again."
+  },
+  "coach": {
+    "title": "Atlas, your coach",
+    "subtitle": "Ask anything about your path — Bangla or English. Atlas answers platform questions only from verified notes.",
+    "empty": "Say hello, or ask what to do next.",
+    "placeholder": "Write to Atlas…",
+    "send": "Send",
+    "dailyCap": "You've used today's free coaching time. Atlas will be back tomorrow — meanwhile, your roadmap missions are waiting.",
+    "error": "Something broke on our side. Try again in a moment."
   },
   "roadmap": {
     "title": "Your 90-day roadmap",
