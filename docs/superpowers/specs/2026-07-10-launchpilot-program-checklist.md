@@ -33,9 +33,11 @@ Owner-approved build program. Full rationale lives in `discovery.md`, `docs/arch
 - [ ] TTS proof: `/api/tts` text+locale → Google TTS → hash-cache → tap-to-listen button
 - [ ] Playwright: sign-in → DB row → streamed AI line → audio plays
 - [ ] GitHub Actions CI: lint + typecheck + Vitest + Playwright on push
-- [ ] Vercel production deploy; live URL
+- [ ] Vercel production deploy; live URL — runbook ready (`docs/DEPLOY.md`); owner-gated on
+      Vercel project + prod Neon + secrets. Note: prod flags default OFF (set `FLAG_*=true`);
+      working auth in prod needs ≥1 of: Google OAuth, phone OTP (Twilio), magic-link email (Resend).
 - [ ] `pnpm setup` < 10 min local bootstrap
-- [ ] Write ADR-0009 + ADR-0010
+- [x] Write ADR-0009 + ADR-0010 (in `docs/decision-log.md`)
 
 ## M1 — bilingual onboarding & skill assessment
 - [ ] Conversational onboarding UI (text + icons + tap-to-listen), adaptive depth, flag `m1_onboarding`

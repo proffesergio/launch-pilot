@@ -7,8 +7,9 @@ paid freelance order, then to a sustainable freelance income.
 LaunchPilot is **a coach, not a course**. It is advisory only: it never touches your
 freelance-marketplace accounts. It guides; you do the work.
 
-> Status: **Phase 1 — Architecture.** No application code yet. The current artifacts are
-> the planning docs. See [`discovery.md`](./discovery.md) and [`/docs`](./docs).
+> Status: **v1 ready to ship (M0–M3.5).** Onboarding → roadmap → coach → Launch Studio are
+> built behind feature flags; lint/typecheck/unit/build are green. Deploying to Vercel is
+> owner-gated ops (account, prod Postgres, secrets) — see [`docs/DEPLOY.md`](./docs/DEPLOY.md).
 
 ## What's here now
 

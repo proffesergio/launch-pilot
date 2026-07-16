@@ -38,6 +38,12 @@ const EnvSchema = z.object({
   TWILIO_AUTH_TOKEN: z.string().optional(),
   TWILIO_FROM_NUMBER: z.string().optional(),
 
+  // Magic-link email — optional; absent = dev mailbox in dev, loud log-only in
+  // production. "resend" additionally needs RESEND_API_KEY + EMAIL_FROM.
+  EMAIL_PROVIDER: z.enum(["dev", "none", "resend"]).optional(),
+  RESEND_API_KEY: z.string().optional(),
+  EMAIL_FROM: z.string().optional(),
+
   // Observability / integrations — optional; absent = that feature is off.
   NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
   NEXT_PUBLIC_POSTHOG_HOST: z.string().url().default("https://us.i.posthog.com"),

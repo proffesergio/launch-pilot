@@ -4,9 +4,8 @@ import { nextCookies } from "better-auth/next-js";
 import { magicLink, phoneNumber } from "better-auth/plugins";
 
 import { getDb } from "@/db";
-import { recordMagicLink } from "./dev-mailbox";
+import { getEmailProvider } from "./email";
 import { getEnv, type Env } from "./env";
-import { logger } from "./logger";
 import { getSmsProvider } from "./sms";
 
 type Db = ReturnType<typeof getDb>;
@@ -57,21 +56,9 @@ export function createAuth(env: Env, db: Db) {
       }),
       magicLink({
         sendMagicLink: async ({ email, url }) => {
-          // No email provider in M0 (Resend lands in its own slice). Outside
-          // production the link goes to the dev mailbox; in production this
-          // is a loud, tracked failure — not a silent one.
-          recordMagicLink(email, url);
-          if (process.env.NODE_ENV === "production") {
-            logger.error(
-              { event: "auth.magic_link.undeliverable", email },
-              "magic link requested but no email provider is configured",
-            );
-            return;
-          }
-          logger.info(
-            { event: "auth.magic_link.dev_mailbox", email },
-            "magic link captured in dev mailbox (/api/dev/magic-link)",
-          );
+          // Delivery is a pluggable provider (email.ts): dev mailbox locally,
+          // Resend in production, loud log-only until a vendor account exists.
+          await getEmailProvider(env).sendMagicLink(email, url);
         },
       }),
       // Keep last: lets server actions set auth cookies.
