@@ -17,12 +17,13 @@
     "signIn": {
       "title": "Sign in to LaunchPilot",
       "phoneLabel": "Your mobile number",
-      "phonePlaceholder": "01712 345678",
+      "countryLabel": "Country code",
+      "phonePlaceholder": "1712 345678",
       "sendCode": "Send me a code",
       "codeSentTo": "We sent a 6-digit code to {phone}. In this preview, codes appear in the developer mailbox.",
       "verify": "Verify and sign in",
       "wrongPhone": "Wrong number? Go back",
-      "invalidPhone": "That doesn't look like a Bangladeshi mobile number (01XXXXXXXXX).",
+      "invalidPhone": "That doesn't look like a valid mobile number. Pick your country and enter your number.",
       "wrongCode": "That code didn't match. Check and try again.",
       "otherOptions": "or",
       "useGoogleOrEmail": "Use Google or email instead",
@@ -348,7 +349,7 @@
         },
         "jobgether": {
           "tagline": "Over 100k remote jobs matched to your profile, each scored for how well it fits you.",
-          "approach": "The profile is the engine: complete skills, languages, time zone, and expectations, then chase only high-match roles. Postings spell out the work setup — check it fits Bangladesh time.",
+          "approach": "The profile is the engine: complete skills, languages, time zone, and expectations, then chase only high-match roles. Postings spell out the work setup — check the hours fit your time zone.",
           "patience": "Mass-applying to low-match roles goes nowhere. Let the match score focus your effort and show you which skill to build next."
         },
         "underdog": {
@@ -444,7 +445,7 @@
       "tracks": "Platform tracks",
       "fiverr": "Fiverr track",
       "upwork": "Upwork track",
-      "payouts": "bKash payouts",
+      "payouts": "Getting paid",
       "more": "More",
       "github": "Open source on GitHub",
       "language": "Language",
@@ -452,8 +453,8 @@
       "copyright": "© {year} LaunchPilot"
     },
     "honestTitle": "The honest part",
-    "honestBody": "We don't promise you'll be rich in 60 days — nobody honest can. We promise a real path: show up ~30 minutes a day, complete the missions, and you'll know exactly what to do next, including the unglamorous parts like fees, taxes on payouts, and how money actually reaches bKash. LaunchPilot never touches your marketplace account. It's free, and after your first real earning, you pay what you think it was worth.",
-    "footer": "Made for Bangladesh"
+    "honestBody": "We don't promise you'll be rich in 60 days — nobody honest can. We promise a real path: show up ~30 minutes a day, complete the missions, and you'll know exactly what to do next, including the unglamorous parts like fees, taxes, and how the money actually reaches your local wallet or bank. LaunchPilot never touches your marketplace account. It's free, and after your first real earning, you pay what you think it was worth.",
+    "footer": "Made for beginners everywhere"
   },
   "studio": {
     "title": "Launch Studio",

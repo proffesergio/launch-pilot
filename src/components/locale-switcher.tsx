@@ -10,23 +10,22 @@ export function LocaleSwitcher() {
   const active = useLocale();
   const pathname = usePathname();
 
+  // A single toggle button, not a side-by-side pair: show only the *other*
+  // locale, so one tap switches languages. The link text is the target
+  // language in its own script (e.g. "English" while on /bn, "বাংলা" on /en).
+  const target = routing.locales.find((locale) => locale !== active);
+  if (!target) return null;
+
   return (
-    <nav aria-label={t("label")} className="flex items-center gap-1 text-sm">
-      {routing.locales.map((locale) => (
-        <Link
-          key={locale}
-          href={pathname}
-          locale={locale}
-          aria-current={locale === active ? "true" : undefined}
-          className={
-            locale === active
-              ? "rounded-full bg-stone-900 px-3 py-1 text-stone-50"
-              : "rounded-full px-3 py-1 text-stone-500 hover:text-stone-900"
-          }
-        >
-          {t(locale)}
-        </Link>
-      ))}
+    <nav aria-label={t("label")} className="text-sm">
+      <Link
+        href={pathname}
+        locale={target}
+        className="inline-flex items-center gap-1 rounded-full border border-stone-200 px-3 py-1 text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900"
+      >
+        <span aria-hidden="true">🌐</span>
+        {t(target)}
+      </Link>
     </nav>
   );
 }

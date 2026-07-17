@@ -1,33 +1,35 @@
 import { describe, it, expect } from "vitest";
 
-import { normalizeBdPhone } from "./phone";
+import { DIAL_CODES, toE164 } from "./phone";
 
-describe("normalizeBdPhone", () => {
-  it("accepts the common local format 01XXXXXXXXX", () => {
-    expect(normalizeBdPhone("01712345678")).toBe("+8801712345678");
+describe("toE164", () => {
+  it("combines a dial code and national number into E.164", () => {
+    expect(toE164("+880", "1712345678")).toBe("+8801712345678");
+    expect(toE164("+1", "5551234567")).toBe("+15551234567");
+    expect(toE164("+44", "7911123456")).toBe("+447911123456");
   });
 
-  it("accepts +880 and 880 prefixed forms", () => {
-    expect(normalizeBdPhone("+8801712345678")).toBe("+8801712345678");
-    expect(normalizeBdPhone("8801712345678")).toBe("+8801712345678");
+  it("strips a national trunk-prefix 0 and separators people actually type", () => {
+    expect(toE164("+880", "017 1234-5678")).toBe("+8801712345678");
+    expect(toE164("+44", "07911 123456")).toBe("+447911123456");
   });
 
-  it("tolerates spaces and dashes people actually type", () => {
-    expect(normalizeBdPhone("017 1234-5678")).toBe("+8801712345678");
+  it("rejects too-short, over-15-digit, and non-numeric numbers", () => {
+    expect(toE164("+880", "123")).toBeNull(); // too short
+    expect(toE164("+1", "1234567890123456")).toBeNull(); // > 15 digits total
+    expect(toE164("+880", "hello")).toBeNull();
+    expect(toE164("+880", "")).toBeNull();
   });
+});
 
-  it("accepts every BD mobile operator prefix (013–019)", () => {
-    for (const p of ["013", "014", "015", "016", "017", "018", "019"]) {
-      // The leading 0 of the local form is replaced by the +880 country code.
-      expect(normalizeBdPhone(`${p}12345678`)).toBe(`+880${p.slice(1)}12345678`);
+describe("DIAL_CODES", () => {
+  it("lists Bangladesh first (flagship default) with unique, well-formed entries", () => {
+    expect(DIAL_CODES[0].code).toBe("BD");
+    const codes = DIAL_CODES.map((d) => d.code);
+    expect(new Set(codes).size).toBe(codes.length); // country codes unique
+    for (const d of DIAL_CODES) {
+      expect(d.dial).toMatch(/^\+\d{1,3}$/);
+      expect(d.name.length).toBeGreaterThan(0);
     }
-  });
-
-  it("rejects non-mobile, wrong-length, and non-BD numbers", () => {
-    expect(normalizeBdPhone("0212345678")).toBeNull(); // landline
-    expect(normalizeBdPhone("0171234567")).toBeNull(); // too short
-    expect(normalizeBdPhone("017123456789")).toBeNull(); // too long
-    expect(normalizeBdPhone("+15551234567")).toBeNull(); // not BD (v1 is BD-first)
-    expect(normalizeBdPhone("hello")).toBeNull();
   });
 });

@@ -130,7 +130,7 @@ function SignInMock({ mock, reduced }: { mock: TutorialMock; reduced: boolean })
     <>
       <MockTitle>{mock.phoneTitle}</MockTitle>
       <div className="rounded-xl border border-white/15 bg-white/[0.04] px-3 py-2.5 font-mono text-sm text-stone-300">
-        +880 17•• •••678
+        🌐 +•• ••• •••678
       </div>
       <div className="rounded-xl bg-marigold px-3 py-2.5 text-center text-sm font-semibold text-ink">
         {mock.phoneCta}

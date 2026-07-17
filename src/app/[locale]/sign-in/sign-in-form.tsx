@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { authClient } from "@/lib/auth-client";
-import { normalizeBdPhone } from "@/lib/phone";
+import { DEFAULT_DIAL_CODE, DIAL_CODES, toE164 } from "@/lib/phone";
 
 type Status = "idle" | "busy" | "error";
 
@@ -12,6 +12,7 @@ export function SignInForm() {
   const t = useTranslations("auth.signIn");
   const locale = useLocale();
   const [step, setStep] = useState<"phone" | "code">("phone");
+  const [country, setCountry] = useState(DEFAULT_DIAL_CODE.code);
   const [phone, setPhone] = useState("");
   const [normalizedPhone, setNormalizedPhone] = useState("");
   const [code, setCode] = useState("");
@@ -25,7 +26,9 @@ export function SignInForm() {
 
   async function sendCode(event: React.FormEvent) {
     event.preventDefault();
-    const normalized = normalizeBdPhone(phone);
+    const dial =
+      DIAL_CODES.find((d) => d.code === country)?.dial ?? DEFAULT_DIAL_CODE.dial;
+    const normalized = toE164(dial, phone);
     if (!normalized) {
       setErrorKey("invalidPhone");
       return;
@@ -99,9 +102,19 @@ export function SignInForm() {
             {t("phoneLabel")}
           </label>
           <div className="flex gap-2">
-            <span className="flex items-center rounded-xl border border-stone-200 bg-stone-100 px-3 font-medium text-stone-600">
-              +880
-            </span>
+            <select
+              aria-label={t("countryLabel")}
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              className="rounded-xl border border-stone-300 bg-white px-2 py-3 text-stone-900 outline-none focus:border-[#F5A524]"
+              data-testid="country-select"
+            >
+              {DIAL_CODES.map((d) => (
+                <option key={d.code} value={d.code}>
+                  {d.flag} {d.dial}
+                </option>
+              ))}
+            </select>
             <input
               id="phone"
               type="tel"

@@ -25,8 +25,10 @@ export function createAuth(env: Env, db: Db) {
     database: drizzleAdapter(db, { provider: "pg" }),
     user: {
       additionalFields: {
-        // Personalizes every later layer (UI, coach, TTS). Bangla-first.
-        locale: { type: "string", defaultValue: "bn", input: false },
+        // Personalizes every later layer (UI, coach, TTS). English-first
+        // default (ADR-0011); overwritten by the user's chosen locale on first
+        // localized request.
+        locale: { type: "string", defaultValue: "en", input: false },
       },
     },
     socialProviders: googleEnabled

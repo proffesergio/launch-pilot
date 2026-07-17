@@ -101,3 +101,41 @@ See design: `docs/superpowers/specs/2026-07-12-launch-studio-design.md`.
 
 ## M10 — observability dashboards
 - [ ] "System breathing" page reading events emitted since M0
+
+## Proposed global-scope features (2026-07-17, ADR-0013) — v2 candidates, not yet locked
+Researched + reasoned additions to make LaunchPilot a globally useful, star-worthy open
+source project. All stay **advisory-only** (ADR-0001) and **grounded** (no hallucinated
+rules); each is a metric-gated slice, TDD, behind a flag. Owner to prune/prioritize.
+
+- [ ] **Proposal Doctor** — paste a real job post → Atlas drafts a tailored proposal/cover
+      letter, then critiques + scores it (specificity, hook, red flags), never auto-submits.
+      Highest-leverage: proposals are where beginners win or lose on Upwork-style platforms.
+- [ ] **Global Pricing & Rate Coach** — PPP-aware rate suggestions by skill + country +
+      platform fees. Generalizes the BD payout module into a community-maintained global
+      pricing/payout registry (rails, fees, tax notes); BD stays the reference entry.
+- [ ] **Scam & Red-Flag Shield** — paste a suspicious client message/job → flags common
+      freelance scams (advance-fee, off-platform payment, overpayment). Protective + viral.
+- [ ] **Mock Client Simulator** — role-play a difficult client with Atlas; practice scoping,
+      scope-creep pushback, and saying no. Gamified, low-stakes reps before real chats.
+- [ ] **Skill-Gap Analyzer + Learning Path** — map current skills to in-demand 2026 skills
+      (AI/data/video editing are surging per Upwork data), recommend free resources for gaps.
+- [ ] **Portfolio-in-a-box** — guided spec projects + a generated portfolio page for the
+      zero-portfolio beginner (the #1 cold-start blocker).
+- [ ] **Open content contributions** — issue/PR templates + a lightweight schema so the
+      community adds platform tracks and country payout entries ("add your country/platform").
+      This is the engine that turns users into contributors (and stars).
+- [ ] **Shareable milestone cards** — a "first $100 with LaunchPilot" card users can post;
+      honest, opt-in, drives organic growth without dark patterns.
+
+### ADR-0013 (global repositioning) — cleanup status
+- [x] Copy-localization sweep: BD-specific strings in `messages/{en,bn}.json` and the landing
+      ("Made for Bangladesh" → "…for beginners everywhere", bKash → generic payout, timezone
+      copy) generalized; "Bangla" the language kept. Phone mock in `landing/tutorial.tsx` neutralized.
+- [x] **International phone sign-in**: `src/lib/phone.ts` now `toE164(dial, national)` + a
+      curated `DIAL_CODES` list; sign-in form has a country-code picker (defaults BD, the
+      flagship). Anyone worldwide can sign in by phone. (Per-country length rules = future
+      libphonenumber upgrade.)
+- [x] English-first: `defaultLocale`/new-user locale = `en`; single-toggle locale switcher.
+- [x] MIT `LICENSE` added (owner: Md Billal Hossain).
+- [ ] Deeper pass (later): platform-track content still BD-centric for payouts — generalize
+      into the community pricing/payout registry (see proposed features above).

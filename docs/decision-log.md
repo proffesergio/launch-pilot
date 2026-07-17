@@ -172,3 +172,27 @@ grouped by category. Advisory-only stands: links out, never integration.
 honest per-site expectations are content, not marketing. − 15 new tracks to keep current
 (quarterly review needed); job-board copy is thinner than Fiverr/Upwork until real user
 questions harden it; onboarding platform step is longer (mitigated by grouping + flag).
+
+## ADR-0013 — Global-first repositioning (English default, worldwide scope, BD as flagship)
+**Date:** 2026-07-17 · **Status:** accepted · **Amends** the "literate beginners in
+Bangladesh / Bangla-first" framing in earlier docs and ADR-0006 (locale ordering).
+**Context:** The owner is open-sourcing LaunchPilot and wants it to serve a beginner
+*anywhere* in the world, read English-first, and attract contributors/stars — not present as
+a Bangladesh-only tool. The prior BD-first framing was deliberate (an underserved market with
+specific payout rails), and that work is real differentiation we don't want to throw away.
+**Decision:** Reposition to **global-first, English-first, with Bangladesh as the flagship
+supported region** (not removed). Concretely: (1) `defaultLocale` and the new-user stored
+locale become `en`; the locale switcher is a single toggle to the other language instead of a
+side-by-side pair; browser-language negotiation still auto-lands e.g. a Bangla browser on
+`/bn`. (2) The BD-specific payout module generalizes into a **community-maintained global
+pricing & payout registry** (per-country rails, fees, PPP-aware rate guidance); the existing
+BD content becomes its reference entry. (3) Copy that hard-codes "Bangladesh" generalizes to
+"wherever you are," with region examples kept as examples. (4) Advisory-only (ADR-0001),
+grounded content, and the versioned-tracks model are unchanged — they scale to more regions,
+not fewer. Bangla, TTS, and the low-literacy phase-2 segment remain first-class.
+**Consequences:** + Larger addressable audience and an obvious open-source contribution
+surface ("add your country/platform"); English-first lowers the barrier for global
+contributors and users. + Keeps the BD differentiation as a concrete, deep example rather
+than the whole thesis. − A copy-localization sweep (messages, landing) is now owed; "global"
+risks genericness if we don't keep shipping the deep, region-specific content that made the
+BD version credible (mitigated by the community registry + flagship-region discipline).

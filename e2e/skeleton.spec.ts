@@ -31,9 +31,9 @@ test.describe("Bangla-preferring browser", () => {
 test.describe("browser preferring an unsupported language", () => {
   test.use({ locale: "fr-FR" });
 
-  test("root falls back to Bangla (Bangla-first default)", async ({ page }) => {
+  test("root falls back to English (global-first default)", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveURL(/\/bn$/);
+    await expect(page).toHaveURL(/\/en$/);
   });
 });
 

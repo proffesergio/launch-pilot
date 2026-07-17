@@ -42,6 +42,6 @@ describe("createAuth", () => {
   it("stores the user's locale on the user model, defaulting to bn", () => {
     const auth = createAuth(env(), db);
     const locale = auth.options.user?.additionalFields?.locale;
-    expect(locale).toMatchObject({ type: "string", defaultValue: "bn" });
+    expect(locale).toMatchObject({ type: "string", defaultValue: "en" });
   });
 });

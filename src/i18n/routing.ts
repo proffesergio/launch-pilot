@@ -1,11 +1,13 @@
 import { defineRouting } from "next-intl/routing";
 
-// Bangla-first: the primary audience reads Bangla; English is the second
-// first-class locale (ADR-0006). "always" keeps /bn and /en canonical so
-// links, analytics, and TTS caching never see an ambiguous unprefixed URL.
+// Global-first: English is the default/fallback locale so the product reads
+// for a newcomer anywhere in the world (ADR-0011). Bangla stays a first-class
+// locale, and browser-language negotiation still auto-lands a Bangla browser
+// on /bn. "always" keeps /en and /bn canonical so links, analytics, and TTS
+// caching never see an ambiguous unprefixed URL.
 export const routing = defineRouting({
-  locales: ["bn", "en"],
-  defaultLocale: "bn",
+  locales: ["en", "bn"],
+  defaultLocale: "en",
   localePrefix: "always",
 });
 
