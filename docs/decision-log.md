@@ -196,3 +196,27 @@ contributors and users. + Keeps the BD differentiation as a concrete, deep examp
 than the whole thesis. − A copy-localization sweep (messages, landing) is now owed; "global"
 risks genericness if we don't keep shipping the deep, region-specific content that made the
 BD version credible (mitigated by the community registry + flagship-region discipline).
+
+## ADR-0014 — Sign-in offers only methods that can actually deliver
+**Date:** 2026-07-19 · **Status:** accepted
+**Context:** The sign-in page hard-coded phone OTP as the primary call-to-action, with
+Google/magic-link hidden behind an "other options" collapse. But phone OTP has no SMS vendor
+yet (owner has no Twilio creds), so in production its delivery provider is the loud but
+user-invisible `log-only` fallback: the most prominent button silently dead-ends. The
+provider layer already knows what's deliverable (`hasTwilioCreds`/`hasResendCreds`, the
+Google client gate), but the UI didn't consult it. This blocks the "make the live app
+usable" release when we launch with Google + Resend and hold SMS for later.
+**Decision:** A single pure function `availableAuthMethods(env, nodeEnv)` (src/lib/auth-methods.ts)
+is the source of truth for which methods reach a real user in the current environment — a
+method is usable iff its resolved provider is not `log-only` (so dev mailboxes still count
+outside production, keeping E2E green). The sign-in server component computes it and the form
+renders accordingly: phone stays the primary path *when deliverable* (the BD default);
+otherwise the form leads with the methods that can deliver (Google/magic-link) and never
+shows a phone step. A fully unconfigured production is honest ("sign-in isn't set up yet")
+instead of showing a dead button. TDD: the function is unit-tested; the form flows stay
+covered by the existing E2E (unchanged in dev).
+**Consequences:** + Production can never advertise a sign-in path that only logs
+"undeliverable"; the release is genuinely usable with any subset of vendors configured.
++ Enabling Twilio later automatically restores phone-primary with no code change. − One more
+server-computed prop into a client component; the form has two layouts to keep working (phone
+-primary and credential-primary), both exercised by env permutations.

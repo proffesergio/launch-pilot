@@ -32,7 +32,8 @@
       "sendLink": "Send me a sign-in link",
       "sent": "Link sent. Check your email and tap it to sign in.",
       "google": "Continue with Google",
-      "error": "That didn't work. Please try again."
+      "error": "That didn't work. Please try again.",
+      "notConfigured": "Sign-in isn’t set up on this site yet. Please check back soon."
     }
   },
   "aiProof": {

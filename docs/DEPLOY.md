@@ -49,7 +49,10 @@ Configure **at least one** (all three are code-complete):
 - **Google OAuth** → set `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET` + do step 5.
 - **Magic-link email** → set `EMAIL_PROVIDER=resend` + `RESEND_API_KEY` + `EMAIL_FROM`.
 
-Without any of these, production sign-in only logs "undeliverable" and no one can get in.
+The sign-in page adapts to what's configured (ADR-0014): it shows only methods that can
+actually deliver, leads with phone OTP when SMS is live (else with Google/magic-link), and
+shows an honest "sign-in isn't set up yet" message if *none* are configured. So configure at
+least one, or no one can get in.
 
 ### Feature flags — REQUIRED to expose any feature in production
 In production every flag defaults **OFF** (`src/lib/flags.ts`). Without these the

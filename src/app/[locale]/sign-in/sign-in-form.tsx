@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
+import type { AuthMethods } from "@/lib/auth-methods";
 import { authClient } from "@/lib/auth-client";
 import { DEFAULT_DIAL_CODE, DIAL_CODES, toE164 } from "@/lib/phone";
 
 type Status = "idle" | "busy" | "error";
 
-export function SignInForm() {
+export function SignInForm({ methods }: { methods: AuthMethods }) {
   const t = useTranslations("auth.signIn");
   const locale = useLocale();
   const [step, setStep] = useState<"phone" | "code">("phone");
@@ -90,13 +91,64 @@ export function SignInForm() {
   const primaryClass =
     "rounded-xl bg-[#F5A524] px-4 py-3 font-semibold text-stone-900 disabled:opacity-50";
 
+  // Google + magic-link, shared between the "other options" collapse (when
+  // phone is primary) and the top-level layout (when phone isn't deliverable).
+  const credMethods = (
+    <div className="flex flex-col gap-3">
+      {methods.google && (
+        <button
+          type="button"
+          onClick={signInWithGoogle}
+          disabled={status === "busy"}
+          className="rounded-xl border border-stone-300 bg-white px-4 py-2.5 font-medium text-stone-900 disabled:opacity-50"
+        >
+          {t("google")}
+        </button>
+      )}
+      {methods.email &&
+        (emailSent ? (
+          <p className="text-sm text-stone-600">{t("sent")}</p>
+        ) : (
+          <form onSubmit={sendMagicLink} className="flex gap-2">
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={t("emailPlaceholder")}
+              aria-label={t("emailLabel")}
+              className={`flex-1 rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-stone-900 outline-none focus:border-[#F5A524]`}
+            />
+            <button
+              type="submit"
+              disabled={status === "busy"}
+              className="rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 disabled:opacity-50"
+            >
+              {t("sendLink")}
+            </button>
+          </form>
+        ))}
+    </div>
+  );
+
+  const hasCredMethods = methods.google || methods.email;
+  const noMethods = !methods.phone && !hasCredMethods;
+
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-3xl font-semibold tracking-tight text-stone-900">
         {t("title")}
       </h1>
 
-      {step === "phone" ? (
+      {/* Misconfigured production: be honest rather than show a dead button. */}
+      {noMethods && (
+        <p className="text-sm text-stone-600" data-testid="no-auth-methods">
+          {t("notConfigured")}
+        </p>
+      )}
+
+      {methods.phone &&
+        (step === "phone" ? (
         <form onSubmit={sendCode} className="flex flex-col gap-3">
           <label htmlFor="phone" className="text-sm text-stone-600">
             {t("phoneLabel")}
@@ -160,61 +212,40 @@ export function SignInForm() {
             {t("wrongPhone")}
           </button>
         </form>
+        ))}
+
+      {!noMethods && (
+        <p aria-live="polite" className="min-h-5 text-sm text-red-600">
+          {errorKey && t(errorKey)}
+        </p>
       )}
 
-      <p aria-live="polite" className="min-h-5 text-sm text-red-600">
-        {errorKey && t(errorKey)}
-      </p>
-
-      <div className="flex items-center gap-3 text-xs uppercase tracking-wide text-stone-400">
-        <span className="h-px flex-1 bg-stone-200" />
-        {t("otherOptions")}
-        <span className="h-px flex-1 bg-stone-200" />
-      </div>
-
-      {!showOther ? (
-        <button
-          type="button"
-          onClick={() => setShowOther(true)}
-          data-testid="show-other-options"
-          className="rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium text-stone-700"
-        >
-          {t("useGoogleOrEmail")}
-        </button>
-      ) : (
-        <div className="flex flex-col gap-3">
-          <button
-            type="button"
-            onClick={signInWithGoogle}
-            disabled={status === "busy"}
-            className="rounded-xl border border-stone-300 bg-white px-4 py-2.5 font-medium text-stone-900 disabled:opacity-50"
-          >
-            {t("google")}
-          </button>
-          {emailSent ? (
-            <p className="text-sm text-stone-600">{t("sent")}</p>
-          ) : (
-            <form onSubmit={sendMagicLink} className="flex gap-2">
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t("emailPlaceholder")}
-                aria-label={t("emailLabel")}
-                className={`flex-1 rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-stone-900 outline-none focus:border-[#F5A524]`}
-              />
+      {hasCredMethods &&
+        (methods.phone ? (
+          // Phone is the primary path; Google/email live under a collapse.
+          <>
+            <div className="flex items-center gap-3 text-xs uppercase tracking-wide text-stone-400">
+              <span className="h-px flex-1 bg-stone-200" />
+              {t("otherOptions")}
+              <span className="h-px flex-1 bg-stone-200" />
+            </div>
+            {showOther ? (
+              credMethods
+            ) : (
               <button
-                type="submit"
-                disabled={status === "busy"}
-                className="rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 disabled:opacity-50"
+                type="button"
+                onClick={() => setShowOther(true)}
+                data-testid="show-other-options"
+                className="rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium text-stone-700"
               >
-                {t("sendLink")}
+                {t("useGoogleOrEmail")}
               </button>
-            </form>
-          )}
-        </div>
-      )}
+            )}
+          </>
+        ) : (
+          // Phone can't deliver here: lead with the methods that can.
+          credMethods
+        ))}
     </div>
   );
 }
