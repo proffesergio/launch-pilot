@@ -220,3 +220,27 @@ covered by the existing E2E (unchanged in dev).
 + Enabling Twilio later automatically restores phone-primary with no code change. − One more
 server-computed prop into a client component; the form has two layouts to keep working (phone
 -primary and credential-primary), both exercised by env permutations.
+
+## ADR-0015 — CV & Application Coach for the job_board path (proposed)
+**Date:** 2026-07-20 · **Status:** proposed (needs owner sign-off before feature code)
+**Context:** The owner wants LaunchPilot to help job-seekers who apply to posted roles (not
+just gig sellers): upload/paste a CV + a target job description and get a tailored analysis,
+cover letter, outreach email, and CV-improvement suggestions. ADR-0012 already carved out a
+`job_board` category with a "CV/alerts/applications/interview path," so this is a deepening of
+an accepted direction, not a new thesis. The owner also floated *finding* jobs from a CV via
+web scraping — that half is **declined for now** as it collides with ADR-0001 (advisory-only,
+no scraping) and the "not a job board / no automation" scope boundary; job discovery is
+deferred and, if ever built, must use official public feeds/APIs, never a scraper.
+**Decision:** Build a **CV & Application Coach** slice, advisory-only, integrated into the
+job_board path and gated behind flag `cv_coach`. Input is pasted CV + JD text (file parsing is
+a follow-up); outputs are four structured artifacts (analysis, cover letter, outreach email,
+CV suggestions), each a Zod schema with a generator, mirroring Launch Studio (M3.5). Hard
+guardrail: the coach helps present **real** experience and must refuse to fabricate degrees,
+employers, dates, or skills — eval-enforced, like the coach's TOS-refusal. Privacy follows the
+M6 stance (minimal retention, one-click delete, no raw CV text in logs). Full plan:
+`docs/cv-coach-plan.md`.
+**Consequences:** + Serves the job_board audience concretely and reuses the Studio pattern
+(low architectural risk). + Keeps the advisory-only line intact by declining scraping. − New
+personal-data surface (CVs) raises the privacy bar; language handling differs from Studio
+(output follows JD language, not English-only); another AI cost center to keep under the
+per-user cap.

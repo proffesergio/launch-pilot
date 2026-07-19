@@ -85,7 +85,17 @@ The single "system breathing" page: DAU/WAU, missions/day, AI calls + cost, P95 
 error rate, sign-up funnel, activation, first-earning funnel. **Exit:** all panels read from
 events emitted since M0.
 
+## M11 — Slice 13: CV & Application Coach (job_board)  · effort: M · owner-prioritized
+Advisory coach for the job_board audience (ADR-0012): paste CV + job description → match
+analysis, tailored cover letter, outreach email, CV-improvement suggestions. Advisory-only,
+never fabricates experience (eval-enforced); job *discovery* deferred (no scraping, ADR-0001).
+Flag `cv_coach`. Full plan: `docs/cv-coach-plan.md`; design in ADR-0015 (proposed).
+**Exit:** four artifacts generate + persist; delete works; eval proves no fabrication; one E2E
+green; per-user AI cost within cap.
+
 ## Deferred / conditional
+- **Job discovery from CV:** only via official public feeds/APIs (RemoteOK/WWR/Remotive),
+  never scraping; deferred until the CV coach validates (owner decision 2026-07-19).
 - **Slice 9 (Community):** built only if a Phase-0 trust/safety review clears it; default is
   to **skip** at our scale (R1).
 - **Phase-2 audience:** lower-literacy / rural path + Bangla **voice input (ASR)** — separate
