@@ -71,6 +71,13 @@
       "when": 1783798747062,
       "tag": "0009_material_amphibian",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1784485921272,
+      "tag": "0010_wonderful_lilandra",
+      "breakpoints": true
     }
   ]
 }

@@ -173,6 +173,34 @@ export type LaunchAssetRow = typeof launchAssets.$inferSelect;
 export type NewLaunchAsset = typeof launchAssets.$inferInsert;
 
 /**
+ * CV & Application Coach (Slice 13, ADR-0015). One row per generated
+ * application: the user's CV + a target job description, and the structured
+ * bundle we produced (analysis, cover letter, outreach email, suggestions) as
+ * jsonb. CV text is personal data — retention is minimal and a one-click delete
+ * removes the row; raw text never reaches the logs.
+ */
+export const cvApplications = pgTable("cv_applications", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  platform: text("platform").notNull(), // a job_board platform id
+  cvText: text("cv_text").notNull(),
+  jobDescription: text("job_description").notNull(),
+  result: jsonb("result").notNull(), // CvApplicationResult (cv-coach.ts)
+  generatedBy: text("generated_by").notNull(), // GENERATOR_VERSION
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type CvApplicationRow = typeof cvApplications.$inferSelect;
+export type NewCvApplication = typeof cvApplications.$inferInsert;
+
+/**
  * Walking-skeleton table. Its only job is to prove a real read/write travels
  * through every layer (env -> drizzle -> Neon Postgres) in M0. The real domain
  * schema (users, freelancer_profiles, roadmaps, missions, xp_ledger, …) lands
