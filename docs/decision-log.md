@@ -221,8 +221,8 @@ covered by the existing E2E (unchanged in dev).
 server-computed prop into a client component; the form has two layouts to keep working (phone
 -primary and credential-primary), both exercised by env permutations.
 
-## ADR-0015 — CV & Application Coach for the job_board path (proposed)
-**Date:** 2026-07-20 · **Status:** proposed (needs owner sign-off before feature code)
+## ADR-0015 — CV & Application Coach for the job_board path (accepted)
+**Date:** 2026-07-20 · **Status:** accepted (owner approved 2026-07-20; built behind `cv_coach`)
 **Context:** The owner wants LaunchPilot to help job-seekers who apply to posted roles (not
 just gig sellers): upload/paste a CV + a target job description and get a tailored analysis,
 cover letter, outreach email, and CV-improvement suggestions. ADR-0012 already carved out a

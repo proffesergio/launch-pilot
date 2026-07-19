@@ -92,8 +92,11 @@ FLAG_M3_COACH=true
 FLAG_M4_GAMIFICATION=true
 FLAG_M5_PLATFORMS=true
 FLAG_M35_LAUNCH_STUDIO=true
+FLAG_CV_COACH=true
 ```
 (Ship a subset by omitting/setting `false` — e.g. hold `FLAG_M35_LAUNCH_STUDIO` for a later cohort.)
+`FLAG_CV_COACH` enables the CV & Application Coach (Slice 13, ADR-0015) on the job_board path;
+it needs a funded `ANTHROPIC_API_KEY` (already required) and no other new secret.
 
 ### Optional — feature stays off cleanly if absent
 | Var | Enables |

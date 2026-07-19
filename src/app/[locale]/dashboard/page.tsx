@@ -10,6 +10,7 @@ import { getAuth } from "@/lib/auth";
 import { loadMissionTemplates } from "@/lib/content";
 import { getFlag } from "@/lib/flags";
 import { XpEventKindSchema, utcToday } from "@/lib/gamification";
+import { isPlatformId, platformCategory } from "@/lib/platforms";
 import { missionXp } from "@/lib/xp";
 import { awardXp, getGamificationSummary } from "@/lib/xp-service";
 import { Reveal } from "./reveal";
@@ -237,6 +238,26 @@ export default async function DashboardPage({
                 </Link>
               </Reveal>
             )}
+
+            {getFlag("cv_coach") &&
+              isPlatformId(profile.targetPlatform) &&
+              platformCategory(profile.targetPlatform) === "job_board" && (
+                <Reveal className={card} delay={0.3}>
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-stone-400">
+                    {t("cards.cvCoach")}
+                  </h2>
+                  <p className="mt-3 text-sm leading-6 text-stone-300">
+                    {t("cards.cvCoachBody")}
+                  </p>
+                  <Link
+                    href="/cv-coach"
+                    data-testid="open-cv-coach"
+                    className="mt-4 inline-block w-fit rounded-lg border border-white/15 bg-white/5 px-5 py-2.5 font-medium text-stone-100 transition-colors hover:border-marigold/60"
+                  >
+                    {t("openCvCoach")}
+                  </Link>
+                </Reveal>
+              )}
 
             {summary && (
               <Reveal className={card} delay={0.32}>

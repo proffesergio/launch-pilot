@@ -74,7 +74,9 @@
       "activity": "Recent activity",
       "activityEmpty": "Your story starts here — every step you take earns XP.",
       "onboarding": "Tell us about your skill",
-      "onboardingBody": "Five questions, under five minutes. Atlas turns your answers into a personal 90-day roadmap."
+      "onboardingBody": "Five questions, under five minutes. Atlas turns your answers into a personal 90-day roadmap.",
+      "cvCoach": "CV & application coach",
+      "cvCoachBody": "Paste your CV and a job post — get a match analysis, a tailored cover letter, an outreach email, and honest CV suggestions. You apply yourself."
     },
     "activity": {
       "onboarding_completed": "Completed onboarding",
@@ -89,7 +91,8 @@
       "platform": "Platform",
       "state": "Journey stage"
     },
-    "viewProfile": "Your profile"
+    "viewProfile": "Your profile",
+    "openCvCoach": "Open CV coach"
   },
   "profilePage": {
     "title": "Your profile",
@@ -104,14 +107,38 @@
     "badgesTitle": "Badges",
     "badgesHint": "Earned by doing — never by paying.",
     "badges": {
-      "first_steps": { "name": "First steps", "desc": "Completed onboarding" },
-      "pathfinder": { "name": "Pathfinder", "desc": "Generated your 90-day roadmap" },
-      "first_words": { "name": "First words", "desc": "First session with Atlas" },
-      "streak_3": { "name": "Warming up", "desc": "3-day activity streak" },
-      "streak_7": { "name": "On fire", "desc": "7-day activity streak" },
-      "level_2": { "name": "Climber", "desc": "Reached level 2" },
-      "level_5": { "name": "Momentum", "desc": "Reached level 5" },
-      "xp_500": { "name": "Five hundred", "desc": "Earned 500 XP" }
+      "first_steps": {
+        "name": "First steps",
+        "desc": "Completed onboarding"
+      },
+      "pathfinder": {
+        "name": "Pathfinder",
+        "desc": "Generated your 90-day roadmap"
+      },
+      "first_words": {
+        "name": "First words",
+        "desc": "First session with Atlas"
+      },
+      "streak_3": {
+        "name": "Warming up",
+        "desc": "3-day activity streak"
+      },
+      "streak_7": {
+        "name": "On fire",
+        "desc": "7-day activity streak"
+      },
+      "level_2": {
+        "name": "Climber",
+        "desc": "Reached level 2"
+      },
+      "level_5": {
+        "name": "Momentum",
+        "desc": "Reached level 5"
+      },
+      "xp_500": {
+        "name": "Five hundred",
+        "desc": "Earned 500 XP"
+      }
     },
     "locked": "Locked",
     "journeyTitle": "Your journey",
@@ -460,9 +487,15 @@
   "studio": {
     "title": "Launch Studio",
     "subtitle": "Turn your profile into a real, publishable gig or profile — you copy and publish, we never touch your account.",
-    "tabs": { "assets": "Your assets", "playbook": "Platform playbook" },
+    "tabs": {
+      "assets": "Your assets",
+      "playbook": "Platform playbook"
+    },
     "noProfile": "Finish onboarding first — the Studio drafts from your skill and level.",
-    "kind": { "fiverr_gig": "Fiverr gig", "upwork_profile": "Upwork profile" },
+    "kind": {
+      "fiverr_gig": "Fiverr gig",
+      "upwork_profile": "Upwork profile"
+    },
     "englishNote": "Marketplace copy is written in English — listings in other languages get rejected.",
     "generateHint": "Atlas drafts a first version from your profile. You edit every word before publishing.",
     "generate": "Draft with Atlas",
@@ -471,7 +504,12 @@
     "save": "Save draft",
     "saving": "Saving…",
     "saved": "Draft saved.",
-    "review": "Readiness review",
+    "review": {
+      "title": "Atlas's honest read",
+      "pass": "Looks good",
+      "warn": "Fix this",
+      "cant_verify": "Only you can check"
+    },
     "reviewing": "Reviewing…",
     "published": "Published",
     "degraded": "You've used today's free AI time. Your draft is safe — come back tomorrow to generate more.",
@@ -491,12 +529,6 @@
       "briefs": "Portfolio briefs",
       "briefTitle": "Title",
       "brief": "What it shows"
-    },
-    "review": {
-      "title": "Atlas's honest read",
-      "pass": "Looks good",
-      "warn": "Fix this",
-      "cant_verify": "Only you can check"
     },
     "publish": {
       "open": "Publish it yourself",
@@ -521,6 +553,39 @@
       "paid": "Paid",
       "askAtlas": "Ask Atlas about this platform"
     }
+  },
+  "cvCoach": {
+    "title": "CV & application coach",
+    "subtitle": "Paste your CV and a job description. Atlas returns a match analysis, a tailored cover letter, an outreach email, and honest CV edits — you send everything yourself.",
+    "platformNote": "Tailoring your application for roles on {platform}.",
+    "cvLabel": "Your CV",
+    "cvPlaceholder": "Paste your full CV text here.",
+    "jdLabel": "The job description",
+    "jdPlaceholder": "Paste the job description you're targeting.",
+    "privacyNote": "Your CV is stored so you can return to this draft. Delete it any time with the button below.",
+    "generate": "Analyse and draft",
+    "generating": "Reading your CV…",
+    "validation": "Add a bit more first — paste a full CV and the job description so Atlas has something real to work with.",
+    "degraded": "You've used today's free AI time. Come back tomorrow to run another analysis.",
+    "errorAuth": "Your session has ended. Sign in again to use the coach.",
+    "errorBadRequest": "That request didn't go through. Check your CV and job description, then try again.",
+    "error": "Something broke on our side. Try again in a moment.",
+    "signIn": "Go to sign-in",
+    "resultTitle": "Your application kit",
+    "analysisTitle": "Match analysis",
+    "matchLabel": "Match score",
+    "strengthsTitle": "Strengths",
+    "gapsTitle": "Gaps to address",
+    "keywordsTitle": "Missing keywords",
+    "coverLetterTitle": "Cover letter",
+    "outreachTitle": "Outreach email",
+    "outreachSubject": "Subject",
+    "suggestionsTitle": "CV improvements",
+    "suggestionWhy": "Why it helps",
+    "copy": "Copy",
+    "copied": "Copied",
+    "delete": "Delete this analysis",
+    "deleting": "Deleting…"
   },
   "home": {
     "title": "Welcome to LaunchPilot",

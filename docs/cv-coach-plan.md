@@ -1,8 +1,9 @@
 # Release N+1 — CV & Application Coach (job_board path)
 
-> Resumable implementation plan. A fresh session should be able to build this from this doc +
-> the referenced files **without re-deriving context**. Status: **designed, not yet signed
-> off.** See ADR-0015 (proposed). Do not write feature code until the owner accepts it.
+> Resumable implementation plan. Status: **BUILT (2026-07-20), behind flag `cv_coach`** —
+> ADR-0015 accepted. Foundation + API + prompts/evals + UI + E2E are in `develop`. What
+> remains is owner verification with a funded `ANTHROPIC_API_KEY` (run `pnpm eval` and the
+> `CV_COACH_E2E` path in CI), then flip `FLAG_CV_COACH=true` in Vercel. Follow-ups below.
 
 ## One-line
 An advisory coach for the **job_board** audience (ADR-0012): user pastes their CV + a target

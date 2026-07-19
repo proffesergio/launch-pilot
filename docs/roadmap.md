@@ -85,7 +85,7 @@ The single "system breathing" page: DAU/WAU, missions/day, AI calls + cost, P95 
 error rate, sign-up funnel, activation, first-earning funnel. **Exit:** all panels read from
 events emitted since M0.
 
-## M11 — Slice 13: CV & Application Coach (job_board)  · effort: M · owner-prioritized
+## M11 — Slice 13: CV & Application Coach (job_board)  · effort: M · BUILT (flag `cv_coach`, 2026-07-20)
 Advisory coach for the job_board audience (ADR-0012): paste CV + job description → match
 analysis, tailored cover letter, outreach email, CV-improvement suggestions. Advisory-only,
 never fabricates experience (eval-enforced); job *discovery* deferred (no scraping, ADR-0001).

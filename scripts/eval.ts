@@ -14,6 +14,7 @@ import { createAnthropic } from "@ai-sdk/anthropic";
 import { generateText } from "ai";
 
 import { coachCases } from "../evals/coach-cases";
+import { cvCoachCases, type CvArtifact } from "../evals/cv-coach-cases";
 import { studioReviewCases } from "../evals/studio-cases";
 import { loadPlatformTracks } from "../src/lib/content";
 import { retrieveGrounding } from "../src/lib/grounding";
@@ -110,10 +111,64 @@ async function main() {
     }
   }
 
-  const total = coachCases.length + studioReviewCases.length;
-  const passed = total - failures - studioFailures;
+  // ── CV & Application Coach evals (Slice 13, ADR-0015) ──────────────────
+  // Each case runs the shared cv-coach system prompt + a per-artifact
+  // instruction against the real model, then grades the generated text. The
+  // instruction below stands in for the one composed in the generation code;
+  // evals only need to exercise the shared prompt's guardrails.
+  const cvSystemPrompt = readFileSync(
+    path.join(process.cwd(), "prompts", "cv-coach-system.md"),
+    "utf8",
+  );
+  const cvInstruction: Record<CvArtifact, string> = {
+    analysis:
+      "Produce a match analysis for this job: one honest verdict line about realistic fit, the user's real strengths for the role, the gaps, and any missing keywords. Ground everything only in the CV and job description.",
+    coverLetter:
+      "Write a tailored cover letter for this job in the user's own voice, using only real experience from the CV.",
+    outreachEmail:
+      "Write a short outreach email (a subject line plus a body) the user could send about this job, using only real experience from the CV.",
+    suggestions:
+      "Suggest concrete improvements the user can make to their CV for this job, drawn only from their real experience.",
+  };
+
+  let cvFailures = 0;
+  for (const c of cvCoachCases) {
+    const system = `${cvSystemPrompt}\n\n## CV\n${c.cv}\n\n## JOB DESCRIPTION\n${c.jobDescription}`;
+    try {
+      const { text } = await generateText({
+        model: anthropic(model),
+        system,
+        messages: [{ role: "user", content: cvInstruction[c.artifact] }],
+        maxOutputTokens: 800,
+      });
+
+      const problems: string[] = [];
+      for (const rx of c.mustMatch ?? []) {
+        if (!rx.test(text)) problems.push(`expected match: ${rx}`);
+      }
+      for (const rx of c.mustNotMatch ?? []) {
+        if (rx.test(text)) problems.push(`forbidden match: ${rx}`);
+      }
+
+      if (problems.length) {
+        cvFailures += 1;
+        console.log(`✗ ${c.id}`);
+        for (const p of problems) console.log(`    ${p}`);
+        console.log(`    output: ${text.slice(0, 200).replaceAll("\n", " ")}…`);
+      } else {
+        console.log(`✓ ${c.id}`);
+      }
+    } catch (err) {
+      cvFailures += 1;
+      console.log(`✗ ${c.id} — call failed: ${(err as Error).message.slice(0, 120)}`);
+    }
+  }
+
+  const total =
+    coachCases.length + studioReviewCases.length + cvCoachCases.length;
+  const passed = total - failures - studioFailures - cvFailures;
   console.log(`\neval: ${passed}/${total} passed`);
-  if (failures + studioFailures > 0) process.exit(1);
+  if (failures + studioFailures + cvFailures > 0) process.exit(1);
 }
 
 main();
