@@ -1,9 +1,37 @@
 # Deploying LaunchPilot to Vercel (v1)
 
-The runbook for a production deploy. Owner-gated steps (account, secrets,
-provisioning) are marked **[owner]**; the rest is already in the repo. Order
-matters — do the database and env vars **before** the first deploy or the app
-will boot-fail loud (by design: `src/lib/env.ts` validates every var at boot).
+Your manual runbook — Release N (make the live app usable)
+
+Everything below is owner-only (secrets/dashboards). I can't and shouldn't hold prod creds.
+
+1. Google OAuth — Google Cloud Console → APIs & Services → Credentials → your OAuth 2.0 Web client:
+- Authorized JavaScript origin: https://launch-pilot-nine.vercel.app
+- Authorized redirect URI: https://launch-pilot-nine.vercel.app/api/auth/callback/google
+- Copy the Client ID + Secret.
+
+2. Resend (magic-link email) — create account at resend.com → verify a sending domain → create an API key. Note a verified EMAIL_FROM like LaunchPilot <login@yourdomain.com>.
+
+3. Vercel → Project → Settings → Environment Variables (Production) — set:
+NEXT_PUBLIC_APP_URL=https://launch-pilot-nine.vercel.app
+GOOGLE_CLIENT_ID=...            GOOGLE_CLIENT_SECRET=...
+EMAIL_PROVIDER=resend           RESEND_API_KEY=...   EMAIL_FROM=LaunchPilot <login@yourdomain.com>
+# turn features on (all default OFF in prod):
+FLAG_M1_ONBOARDING=true  FLAG_M2_ROADMAP=true  FLAG_M3_COACH=true
+FLAG_M4_GAMIFICATION=true  FLAG_M5_PLATFORMS=true  FLAG_M35_LAUNCH_STUDIO=true
+(Leave all SMS_PROVIDER/TWILIO_* unset — sign-in auto-hides phone. DATABASE_URL, BETTER_AUTH_SECRET, ANTHROPIC_API_KEY should already be set from the first deploy; GOOGLE_TTS_API_KEY, PostHog, Sentry are optional.)
+
+4. Ship it (git — run these yourself):
+git push -u origin develop           # publish the branch
+git checkout main && git merge --ff-only develop && git push origin main
+Pushing main triggers the Vercel production deploy. (Prefer review? gh pr create --base main --head develop instead, then merge.) Watch the build log for env-validation errors — they name the offending var.
+
+5. Smoke test the live URL (once deployed):
+1. /en and /bn render; language toggle works.
+2. Sign in with Google → lands on /dashboard.
+3. Sign in with magic link (check email) → /dashboard. Phone should not appear as an option.
+4. Onboarding → roadmap generates → open coach, confirm a reply streams and a TOS-violating ask is refused.
+
+
 
 ## 0. Preconditions
 - Green `main`: `pnpm lint && pnpm typecheck && pnpm test && pnpm build` all pass.
